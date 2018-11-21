@@ -52,6 +52,7 @@
 		B4340B7D21A5376400A4993E /* weibo_0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = weibo_0.json; sourceTree = "<group>"; };
 		B4340B7E21A5376400A4993E /* Weibo@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Weibo@3x.jpg"; sourceTree = "<group>"; };
 		B4340B8B21A5378100A4993E /* ResourceWeibo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ResourceWeibo.bundle; sourceTree = "<group>"; };
+		B4340B8E21A543B900A4993E /* YWeiBoDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWeiBoDemo.pch; sourceTree = "<group>"; };
 		B48C89AA41D9A12F4464AEE6 /* Pods-YWeiBoDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YWeiBoDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YWeiBoDemo/Pods-YWeiBoDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +115,7 @@
 				B4340B6521A5324500A4993E /* LaunchScreen.storyboard */,
 				B4340B6821A5324500A4993E /* Info.plist */,
 				B4340B6921A5324500A4993E /* main.m */,
+				B4340B8E21A543B900A4993E /* YWeiBoDemo.pch */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -232,10 +234,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-YWeiBoDemo/Pods-YWeiBoDemo-resources.sh",
+				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,9 +419,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WVNBUP4CB4;
+				GCC_PREFIX_HEADER = "YWeiBoDemo/Supporting Files/YWeiBoDemo.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/YWeiBoDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxw.YWeiBoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -431,9 +439,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WVNBUP4CB4;
+				GCC_PREFIX_HEADER = "YWeiBoDemo/Supporting Files/YWeiBoDemo.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/YWeiBoDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxw.YWeiBoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

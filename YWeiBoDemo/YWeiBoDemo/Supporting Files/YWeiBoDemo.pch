@@ -1,0 +1,29 @@
+//
+//  YWeiBoDemo.pch
+//  YWeiBoDemo
+//
+//  Created by YXW on 2018/11/21.
+//  Copyright © 2018 YXW. All rights reserved.
+//
+
+#ifndef YWeiBoDemo_pch
+#define YWeiBoDemo_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import <CocoaLumberjack.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <IQKeyboardManager.h>
+#import <MJRefresh.h>
+#import <MJExtension.h>
+#import <YYCategories.h>
+
+#ifdef DEBUG
+static const int ddLogLevel = DDLogLevelVerbose;
+#else
+static const int ddLogLevel = DDLogLevelWarning;
+#define NSLog(FORMAT, ...) nil
+#endif
+
+#endif /* YWeiBoDemo_pch */
