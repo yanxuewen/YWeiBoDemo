@@ -7,6 +7,7 @@
 //
 
 #import "YViewController.h"
+#import "YWBModel.h"
 
 @interface YViewController ()
 
@@ -18,8 +19,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"微博 Demo";
-
-   
+    NSData *data = [NSData dataNamed:@"weibo_0.json"];
+    YWBModel *wbModel = [YWBModel modelWithJSON:data];
+    DDLogInfo(@"wbModel %@",wbModel);
+    
 }
 
 

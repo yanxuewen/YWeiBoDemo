@@ -16,8 +16,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <IQKeyboardManager.h>
 #import <MJRefresh.h>
-#import <MJExtension.h>
-#import <YYCategories.h>
+//#import <MJExtension.h>
+#import <YYKit.h>
 #import <MBProgressHUD.h>
 #import <RealReachability.h>
 
