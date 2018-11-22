@@ -18,6 +18,10 @@
 #import <MJRefresh.h>
 #import <MJExtension.h>
 #import <YYCategories.h>
+#import <MBProgressHUD.h>
+#import <RealReachability.h>
+
+#import "YCommonMacros.h"
 
 #ifdef DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;

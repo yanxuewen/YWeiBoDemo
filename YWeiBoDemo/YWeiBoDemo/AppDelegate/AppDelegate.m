@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AppDelegate+AppService.h"
 #import "YViewController.h"
 
 @interface AppDelegate ()
@@ -18,19 +19,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    //DDLog
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
-    DDFileLogger *fileLogger = [[DDFileLogger alloc] init]; // File Logger
-    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    [DDLog addLogger:fileLogger];
+    [self initWindow];
+    [self initDDLog];
+    [self monitorNetworkStatus];
     
     YViewController *mainVC = [[YViewController alloc] init];
     UINavigationController *rootVC = [[UINavigationController alloc] initWithRootViewController:mainVC];
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = rootVC;
-    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

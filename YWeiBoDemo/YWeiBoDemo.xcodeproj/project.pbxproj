@@ -24,6 +24,7 @@
 		B4340B8821A5376500A4993E /* weibo_1.json in Resources */ = {isa = PBXBuildFile; fileRef = B4340B7C21A5376400A4993E /* weibo_1.json */; };
 		B4340B8921A5376500A4993E /* weibo_0.json in Resources */ = {isa = PBXBuildFile; fileRef = B4340B7D21A5376400A4993E /* weibo_0.json */; };
 		B4340B8A21A5376500A4993E /* Weibo@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B4340B7E21A5376400A4993E /* Weibo@3x.jpg */; };
+		B4EC5E5621A642B1001BF575 /* AppDelegate+AppService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EC5E5521A642B1001BF575 /* AppDelegate+AppService.m */; };
 		F422D6E9559686258F34250E /* libPods-YWeiBoDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38EAFA88E7F2704901B0696F /* libPods-YWeiBoDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,9 @@
 		B4340B8B21A5378100A4993E /* ResourceWeibo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ResourceWeibo.bundle; sourceTree = "<group>"; };
 		B4340B8E21A543B900A4993E /* YWeiBoDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWeiBoDemo.pch; sourceTree = "<group>"; };
 		B48C89AA41D9A12F4464AEE6 /* Pods-YWeiBoDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YWeiBoDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YWeiBoDemo/Pods-YWeiBoDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		B4EC5E5421A642B1001BF575 /* AppDelegate+AppService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+AppService.h"; sourceTree = "<group>"; };
+		B4EC5E5521A642B1001BF575 /* AppDelegate+AppService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+AppService.m"; sourceTree = "<group>"; };
+		B4EC5E5921A645A0001BF575 /* YCommonMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YCommonMacros.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,11 +101,10 @@
 		B4340B5921A5324300A4993E /* YWeiBoDemo */ = {
 			isa = PBXGroup;
 			children = (
-				B4340B5A21A5324300A4993E /* AppDelegate.h */,
-				B4340B5B21A5324300A4993E /* AppDelegate.m */,
-				B4340B5D21A5324300A4993E /* YViewController.h */,
-				B4340B5E21A5324300A4993E /* YViewController.m */,
+				B4EC5E4F21A63FF1001BF575 /* AppDelegate */,
+				B4EC5E5021A641FB001BF575 /* Feed list */,
 				B4340B7221A5376400A4993E /* Resources */,
+				B4EC5E5721A64440001BF575 /* Define */,
 				B4340B7121A5371700A4993E /* Supporting Files */,
 			);
 			path = YWeiBoDemo;
@@ -137,6 +140,58 @@
 				B4340B7E21A5376400A4993E /* Weibo@3x.jpg */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B4EC5E4F21A63FF1001BF575 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				B4340B5A21A5324300A4993E /* AppDelegate.h */,
+				B4340B5B21A5324300A4993E /* AppDelegate.m */,
+				B4EC5E5421A642B1001BF575 /* AppDelegate+AppService.h */,
+				B4EC5E5521A642B1001BF575 /* AppDelegate+AppService.m */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		B4EC5E5021A641FB001BF575 /* Feed list */ = {
+			isa = PBXGroup;
+			children = (
+				B4EC5E5121A64220001BF575 /* Controller */,
+				B4EC5E5321A64243001BF575 /* Model */,
+				B4EC5E5221A64238001BF575 /* View */,
+			);
+			path = "Feed list";
+			sourceTree = "<group>";
+		};
+		B4EC5E5121A64220001BF575 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B4340B5D21A5324300A4993E /* YViewController.h */,
+				B4340B5E21A5324300A4993E /* YViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B4EC5E5221A64238001BF575 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B4EC5E5321A64243001BF575 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B4EC5E5721A64440001BF575 /* Define */ = {
+			isa = PBXGroup;
+			children = (
+				B4EC5E5921A645A0001BF575 /* YCommonMacros.h */,
+			);
+			path = Define;
 			sourceTree = "<group>";
 		};
 		C3C0BB5FD1E809E4FC0C38C2 /* Pods */ = {
@@ -272,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4EC5E5621A642B1001BF575 /* AppDelegate+AppService.m in Sources */,
 				B4340B5F21A5324300A4993E /* YViewController.m in Sources */,
 				B4340B6A21A5324500A4993E /* main.m in Sources */,
 				B4340B5C21A5324300A4993E /* AppDelegate.m in Sources */,

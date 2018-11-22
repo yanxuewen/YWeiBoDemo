@@ -18,6 +18,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"微博 Demo";
+
+   
 }
 
 
