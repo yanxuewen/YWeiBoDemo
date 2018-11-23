@@ -7,20 +7,11 @@
 //
 
 #import "YBaseModel.h"
+#import "YWBStatusTitle.h"
+#import "YWBUser.h"
 
-typedef NS_ENUM(NSInteger,YWBGender) {
-    YWBGenderUnknown = 0,
-    YWBGenderMale,          ///< 男
-    YWBGenderFemale,        ///< 女
-};
 
-///< 认证类型
-typedef NS_ENUM(NSInteger, YWBUserVerifyType){
-    YWBUserVerifyTypeNone = 0,     ///< 没有认证
-    YWBUserVerifyTypeStandard,     ///< 个人认证，黄V
-    YWBUserVerifyTypeOrganization, ///< 官方认证，蓝V
-    YWBUserVerifyTypeClub,         ///< 达人认证，红星
-};
+
 
 /// 图片标记
 typedef NS_ENUM(NSInteger, YWBPicBadgeType) {
@@ -30,7 +21,7 @@ typedef NS_ENUM(NSInteger, YWBPicBadgeType) {
 };
 
 NS_ASSUME_NONNULL_BEGIN
-@class YWBAdModel,YWBStatuse,YWBUser,YWBPicInfo,YWBPicMetadata;
+@class YWBAdModel,YWBStatus,YWBPicInfo,YWBPicMetadata;
 
 @interface YWBModel : YBaseModel
 
@@ -45,9 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSUInteger max_id;
 @property (nonatomic, strong) NSArray<YWBAdModel *> *ad;
 
-@property (nonatomic, strong) NSArray<YWBStatuse *> *statuses; ///< 微博列表
+@property (nonatomic, strong) NSArray<YWBStatus *> *statuses; ///< 微博列表
 
 @end
+
 
 @interface YWBAdModel : YBaseModel
 
@@ -57,8 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@class YWBURLStruct,YWBPageInfo,YWBTopicStruct,YWBTagStruct,YWBStatusTitle;
-@interface YWBStatuse : YBaseModel
+
+@class YWBURLStruct,YWBPageInfo,YWBTopicStruct,YWBTagStruct;
+@interface YWBStatus : YBaseModel
 
 @property (nonatomic, assign) NSInteger mblogtype;
 @property (nonatomic, strong) NSDate *created_at;               ///< 发布时间
@@ -68,14 +61,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) YWBUser *user;
 @property (nonatomic, assign) NSInteger user_type;
 
-@property (nonatomic, strong) YWBStatusTitle *title;             ///< 标题栏 (通常为nil)
+@property (nonatomic, strong) YWBStatusTitle *title;            ///< 标题栏 (通常为nil)
 @property (nonatomic, strong) NSString *pic_bg;                 ///< 微博VIP背景图，需要替换 "os7"
 @property (nonatomic, strong) NSString *text;                   ///< 正文
 @property (nonatomic, strong) NSURL *thumbnail_pic;             ///< 缩略图
 @property (nonatomic, strong) NSURL *bmiddle_pic;               ///< 中图
 @property (nonatomic, strong) NSURL *original_pic;              ///< 大图
 
-@property (nonatomic, strong) YWBStatuse *retweeted_status;     ///< 转发微博
+@property (nonatomic, strong) YWBStatus *retweeted_status;     ///< 转发微博
 
 @property (nonatomic, strong) NSArray<NSString *> *pic_ids;
 @property (nonatomic, strong) NSDictionary<NSString *, YWBPicInfo *> *pic_infos;
@@ -100,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *source;                 ///< 来自 XXX
 @property (nonatomic, assign) NSInteger source_type;
-@property (nonatomic, assign) NSInteger source_allow_click;     ///< 来源是否允许点击
+@property (nonatomic, assign) NSInteger source_allowclick;     ///< 来源是否允许点击
 
 @property (nonatomic, strong) NSDictionary *geo;
 @property (nonatomic, strong) NSArray *annotations;             ///< 地理位置
@@ -112,93 +105,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDictionary *visible;
 @property (nonatomic, strong) NSArray *darwin_tags;
 
-@end
-
-@interface YWBStatusTitle : YBaseModel
-
-@property (nonatomic, assign) NSInteger baseColor;
-@property (nonatomic, strong) NSString *text; ///< 文本，例如"仅自己可见"
-@property (nonatomic, strong) NSString *icon_url; ///< 图标URL，需要加Default
+// layout
+@property (nonatomic, assign, readonly) CGFloat cellHeight;
 
 @end
 
-@interface YWBUser : YBaseModel
 
-@property (nonatomic, strong) NSString *idStr;
-@property (nonatomic, assign) YWBGender gender;
-@property (nonatomic, strong) NSString *desc;               ///< 个人简介
-@property (nonatomic, strong) NSString *domain;             ///< 个性域名
-
-@property (nonatomic, strong) NSString *name;               ///< 昵称
-@property (nonatomic, strong) NSString *screen_name;        ///< 友好昵称
-@property (nonatomic, strong) NSString *remark;             ///< 备注
-
-@property (nonatomic, assign) NSInteger followers_count;    ///< 粉丝数
-@property (nonatomic, assign) NSInteger friends_count;      ///< 关注数
-@property (nonatomic, assign) NSInteger bi_followers_count; ///< 好友数 (双向关注)
-@property (nonatomic, assign) NSInteger favourites_count;   ///< 收藏数
-@property (nonatomic, assign) NSInteger statuses_count;     ///< 微博数
-@property (nonatomic, assign) NSInteger topics_count;       ///< 话题数
-@property (nonatomic, assign) NSInteger blocked_count;      ///< 屏蔽数
-@property (nonatomic, assign) NSInteger pagefriends_count;
-@property (nonatomic, assign) BOOL followMe;
-@property (nonatomic, assign) BOOL following;
-
-@property (nonatomic, strong) NSString *province;           ///< 省
-@property (nonatomic, strong) NSString *city;               ///< 市
-
-@property (nonatomic, strong) NSString *url;                ///< 博客地址
-@property (nonatomic, strong) NSURL *profile_image_url;     ///< 头像 50x50 (FeedList)
-@property (nonatomic, strong) NSURL *avatar_large;          ///< 头像 180*180
-@property (nonatomic, strong) NSURL *avatar_hd;             ///< 头像 原图
-@property (nonatomic, strong) NSURL *cover_image;           ///< 封面图 920x300
-@property (nonatomic, strong) NSURL *cover_image_phone;
-
-@property (nonatomic, strong) NSString *profile_url;
-@property (nonatomic, assign) NSInteger type;
-@property (nonatomic, assign) NSInteger ptype;
-@property (nonatomic, assign) NSInteger mbtype;
-@property (nonatomic, assign) NSInteger urank;              ///< 微博等级 (LV)
-@property (nonatomic, assign) NSInteger uclass;
-@property (nonatomic, assign) NSInteger ulevel;
-@property (nonatomic, assign) NSInteger mbrank;             ///< 会员等级 (橙名 VIP)
-@property (nonatomic, assign) NSInteger star;
-@property (nonatomic, assign) NSInteger level;
-@property (nonatomic, strong) NSDate *created_at;           ///< 注册时间
-@property (nonatomic, assign) BOOL allow_all_act_msg;
-@property (nonatomic, assign) BOOL allow_all_comment;
-@property (nonatomic, assign) BOOL geo_enabled;
-@property (nonatomic, assign) NSInteger online_status;
-@property (nonatomic, strong) NSString *location;           ///< 所在地
-@property (nonatomic, strong) NSArray<NSDictionary<NSString *, NSString *> *> *icons;
-@property (nonatomic, strong) NSString *weihao;
-@property (nonatomic, strong) NSString *badge_top;
-@property (nonatomic, assign) NSInteger block_word;
-@property (nonatomic, assign) NSInteger block_app;
-@property (nonatomic, assign) NSInteger has_ability_tag;
-@property (nonatomic, assign) NSInteger credit_score;       ///< 信用积分
-@property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *badge; ///< 勋章
-@property (nonatomic, strong) NSString *lang;
-@property (nonatomic, assign) NSInteger user_ability;
-@property (nonatomic, strong) NSDictionary *extend;
-
-@property (nonatomic, assign) BOOL verified;                ///< 微博认证 (大V)
-@property (nonatomic, assign) NSInteger verified_type;
-@property (nonatomic, assign) NSInteger verified_level;
-@property (nonatomic, assign) NSInteger verified_state;
-@property (nonatomic, strong) NSString *verified_contact_email;
-@property (nonatomic, strong) NSString *verified_contact_mobile;
-@property (nonatomic, strong) NSString *verified_trade;
-@property (nonatomic, strong) NSString *verified_contact_name;
-@property (nonatomic, strong) NSString *verified_source;
-@property (nonatomic, strong) NSString *verified_sourceURL;
-@property (nonatomic, strong) NSString *verified_reason;      ///< 微博认证描述
-@property (nonatomic, strong) NSString *verified_reason_url;
-@property (nonatomic, strong) NSString *verified_reason_modified;
-
-@property (nonatomic, assign) YWBUserVerifyType user_verify_type;
-
-@end
 
 
 @interface YWBPicInfo : YBaseModel
@@ -223,7 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger width;              ///< pixel width
 @property (nonatomic, assign) NSInteger height;             ///< pixel height
 @property (nonatomic, strong) NSString *type;               ///< "WEBP" "JPEG" "GIF"
-@property (nonatomic, assign) NSInteger cutType;            ///< Default:1
+@property (nonatomic, assign) NSInteger cut_type;           ///< Default:1
 @property (nonatomic, assign) YWBPicBadgeType badgeType;
 
 @end

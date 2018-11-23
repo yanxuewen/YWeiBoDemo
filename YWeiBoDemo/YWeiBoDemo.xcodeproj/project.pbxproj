@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B432201E21A79F57005027C4 /* YWBFeedListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B432201D21A79F57005027C4 /* YWBFeedListCell.m */; };
+		B432202121A7AB52005027C4 /* YWBProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = B432202021A7AB52005027C4 /* YWBProfileView.m */; };
+		B432202521A7AE80005027C4 /* YWBStatusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B432202421A7AE80005027C4 /* YWBStatusHelper.m */; };
+		B432202821A7D92A005027C4 /* YWBStatusTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = B432202721A7D92A005027C4 /* YWBStatusTitle.m */; };
+		B432202B21A7D9E0005027C4 /* YWBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B432202A21A7D9E0005027C4 /* YWBUser.m */; };
+		B432202C21A7F5CA005027C4 /* ResourceWeibo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B4340B8B21A5378100A4993E /* ResourceWeibo.bundle */; };
+		B432202F21A7F855005027C4 /* YWBStatusTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B432202E21A7F855005027C4 /* YWBStatusTitleView.m */; };
 		B4340B5C21A5324300A4993E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B4340B5B21A5324300A4993E /* AppDelegate.m */; };
 		B4340B5F21A5324300A4993E /* YViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4340B5E21A5324300A4993E /* YViewController.m */; };
 		B4340B6221A5324300A4993E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4340B6021A5324300A4993E /* Main.storyboard */; };
@@ -33,6 +40,18 @@
 /* Begin PBXFileReference section */
 		38EAFA88E7F2704901B0696F /* libPods-YWeiBoDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YWeiBoDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		536310F256C634883218F5ED /* Pods-YWeiBoDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YWeiBoDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-YWeiBoDemo/Pods-YWeiBoDemo.release.xcconfig"; sourceTree = "<group>"; };
+		B432201C21A79F57005027C4 /* YWBFeedListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBFeedListCell.h; sourceTree = "<group>"; };
+		B432201D21A79F57005027C4 /* YWBFeedListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBFeedListCell.m; sourceTree = "<group>"; };
+		B432201F21A7AB52005027C4 /* YWBProfileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBProfileView.h; sourceTree = "<group>"; };
+		B432202021A7AB52005027C4 /* YWBProfileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBProfileView.m; sourceTree = "<group>"; };
+		B432202321A7AE80005027C4 /* YWBStatusHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBStatusHelper.h; sourceTree = "<group>"; };
+		B432202421A7AE80005027C4 /* YWBStatusHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBStatusHelper.m; sourceTree = "<group>"; };
+		B432202621A7D92A005027C4 /* YWBStatusTitle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBStatusTitle.h; sourceTree = "<group>"; };
+		B432202721A7D92A005027C4 /* YWBStatusTitle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBStatusTitle.m; sourceTree = "<group>"; };
+		B432202921A7D9E0005027C4 /* YWBUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBUser.h; sourceTree = "<group>"; };
+		B432202A21A7D9E0005027C4 /* YWBUser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBUser.m; sourceTree = "<group>"; };
+		B432202D21A7F855005027C4 /* YWBStatusTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBStatusTitleView.h; sourceTree = "<group>"; };
+		B432202E21A7F855005027C4 /* YWBStatusTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBStatusTitleView.m; sourceTree = "<group>"; };
 		B4340B5721A5324300A4993E /* YWeiBoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YWeiBoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4340B5A21A5324300A4993E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B4340B5B21A5324300A4993E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -84,6 +103,15 @@
 				38EAFA88E7F2704901B0696F /* libPods-YWeiBoDemo.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B432202221A7AE12005027C4 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B432202321A7AE80005027C4 /* YWBStatusHelper.h */,
+				B432202421A7AE80005027C4 /* YWBStatusHelper.m */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		B4340B4E21A5324300A4993E = {
@@ -164,8 +192,9 @@
 			isa = PBXGroup;
 			children = (
 				B4EC5E5121A64220001BF575 /* Controller */,
-				B4EC5E5321A64243001BF575 /* Model */,
 				B4EC5E5221A64238001BF575 /* View */,
+				B4EC5E5321A64243001BF575 /* Model */,
+				B432202221A7AE12005027C4 /* Helper */,
 			);
 			path = "Feed list";
 			sourceTree = "<group>";
@@ -182,6 +211,12 @@
 		B4EC5E5221A64238001BF575 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B432201C21A79F57005027C4 /* YWBFeedListCell.h */,
+				B432201D21A79F57005027C4 /* YWBFeedListCell.m */,
+				B432201F21A7AB52005027C4 /* YWBProfileView.h */,
+				B432202021A7AB52005027C4 /* YWBProfileView.m */,
+				B432202D21A7F855005027C4 /* YWBStatusTitleView.h */,
+				B432202E21A7F855005027C4 /* YWBStatusTitleView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -191,6 +226,10 @@
 			children = (
 				B4EC5E5F21A68A75001BF575 /* YWBModel.h */,
 				B4EC5E6021A68A75001BF575 /* YWBModel.m */,
+				B432202621A7D92A005027C4 /* YWBStatusTitle.h */,
+				B432202721A7D92A005027C4 /* YWBStatusTitle.m */,
+				B432202921A7D9E0005027C4 /* YWBUser.h */,
+				B432202A21A7D9E0005027C4 /* YWBUser.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -280,6 +319,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B432202C21A7F5CA005027C4 /* ResourceWeibo.bundle in Resources */,
 				B4340B8021A5376500A4993E /* weibo_2.json in Resources */,
 				B4340B8321A5376500A4993E /* EmoticonQQ.bundle in Resources */,
 				B4340B8A21A5376500A4993E /* Weibo@3x.jpg in Resources */,
@@ -346,11 +386,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4EC5E5621A642B1001BF575 /* AppDelegate+AppService.m in Sources */,
+				B432202B21A7D9E0005027C4 /* YWBUser.m in Sources */,
+				B432202121A7AB52005027C4 /* YWBProfileView.m in Sources */,
+				B432202521A7AE80005027C4 /* YWBStatusHelper.m in Sources */,
 				B4340B5F21A5324300A4993E /* YViewController.m in Sources */,
 				B4EC5E6121A68A75001BF575 /* YWBModel.m in Sources */,
+				B432202F21A7F855005027C4 /* YWBStatusTitleView.m in Sources */,
+				B432201E21A79F57005027C4 /* YWBFeedListCell.m in Sources */,
 				B4EC5E5D21A688B5001BF575 /* YBaseModel.m in Sources */,
 				B4340B6A21A5324500A4993E /* main.m in Sources */,
 				B4340B5C21A5324300A4993E /* AppDelegate.m in Sources */,
+				B432202821A7D92A005027C4 /* YWBStatusTitle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

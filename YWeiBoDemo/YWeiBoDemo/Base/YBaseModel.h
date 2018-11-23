@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YBaseModel : NSObject<NSCopying,NSCoding>
 
+- (void)y_layout;
+
 @end
 
 NS_ASSUME_NONNULL_END

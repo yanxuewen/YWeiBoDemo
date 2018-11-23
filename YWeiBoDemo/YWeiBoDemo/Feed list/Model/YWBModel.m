@@ -7,13 +7,16 @@
 //
 
 #import "YWBModel.h"
+#import "YWBStatusTitle.h"
+#import "YWBStatusHelper.h"
+#import "YWBUser.h"
 
 @implementation YWBModel
 
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{@"ad" : [YWBAdModel class],
              @"advertises" : [NSString class],
-             @"statuses" : [YWBStatuse class],
+             @"statuses" : [YWBStatus class],
              @"pics" : [YWBPicInfo class]
              };
 }
@@ -30,8 +33,10 @@
 
 @end
 
-#pragma mark - YWBStatuse
-@implementation YWBStatuse
+#pragma mark - YWBStatus
+@implementation YWBStatus {
+    CGFloat _cellHeight;
+}
 
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"idStr" : @"id",
@@ -73,47 +78,23 @@
     
 }
 
-@end
-
-
-@implementation YWBStatusTitle
-
-
-
-@end
-
-#pragma mark - YWBUser
-@implementation YWBUser
-
-+ (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"idStr" : @"id",
-             @"desc" : @"description"
-             };
+- (void)y_layout {
+    [_title y_layout];
+    [_user y_layout];
 }
 
-- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
-    _gender = YWBGenderUnknown;
-    NSString *gender = [dic valueForKey:@"gender"];
-    if ([gender isEqualToString:@"m"]) {
-        _gender = YWBGenderMale;
-    } else if ([gender isEqualToString:@"f"]) {
-        _gender = YWBGenderFemale;
+- (CGFloat)cellHeight {
+    if (_cellHeight < 1.) {
+        _cellHeight = kWBCellTopMargin;
+        _cellHeight += _title.titleHeight;
+        _cellHeight += _user.profileHeight;
+        _cellHeight += kWBCellToolbarBottomMargin;
     }
-    
-    // 这个不一定准。。
-    if (_verified) {
-        _user_verify_type = YWBUserVerifyTypeStandard;
-    } else if (_verified_type == 220) {
-        _user_verify_type = YWBUserVerifyTypeClub;
-    } else if (_verified_type == -1 && _verified_level == 3) {
-        _user_verify_type = YWBUserVerifyTypeOrganization;
-    } else {
-        _user_verify_type = YWBUserVerifyTypeNone;
-    }
-    return YES;
+    return _cellHeight;
 }
 
 @end
+
 
 #pragma mark - YWBPicInfo
 @implementation YWBPicInfo
