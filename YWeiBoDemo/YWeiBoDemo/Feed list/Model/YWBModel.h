@@ -9,7 +9,7 @@
 #import "YBaseModel.h"
 #import "YWBStatusTitle.h"
 #import "YWBUser.h"
-
+#import "YWBToolbar.h"
 
 
 
@@ -107,6 +107,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // layout
 @property (nonatomic, assign, readonly) CGFloat cellHeight;
+@property (nonatomic, strong) YWBToolbar *toobarM;
+
 
 @end
 

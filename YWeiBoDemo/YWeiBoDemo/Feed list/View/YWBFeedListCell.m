@@ -10,12 +10,14 @@
 
 #import "YWBStatusTitleView.h"
 #import "YWBProfileView.h"
+#import "YWBToolbarView.h"
 
 @interface YWBFeedListCell ()
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) YWBProfileView *profileView;
 @property (nonatomic, strong) YWBStatusTitleView *titleView;
+@property (nonatomic, strong) YWBToolbarView *toolbarView;
 
 @end
 
@@ -80,10 +82,17 @@
     _profileView.cell = self;
     [_containerView addSubview:_profileView];
     
+    _toolbarView = [YWBToolbarView new];
+    _toolbarView.cell = self;
+    [_containerView addSubview:_toolbarView];
+    
 }
 
 - (void)setStatusM:(YWBStatus *)statusM {
     _statusM = statusM;
+    self.contentView.height = statusM.cellHeight;
+    _containerView.top = kWBCellTopMargin;
+    _containerView.height = statusM.cellHeight - kWBCellTopMargin - kWBCellToolbarBottomMargin;
     CGFloat top = 0.;
     if (statusM.title.titleHeight > 1) {
         _titleView.hidden = NO;
@@ -95,6 +104,11 @@
     
     _profileView.top = top;
     _profileView.userM = statusM.user;
+    top += statusM.user.profileHeight;
+    
+    _toolbarView.top = top;
+    _toolbarView.toobarM = statusM.toobarM;
+    top += statusM.toobarM.toolbarHeight;
 }
 
 

@@ -16,7 +16,7 @@
 }
 
 - (void)y_layout {
-    _titleHeight = 0;
+    _titleHeight = 0.;
     _titleTextLayout = nil;
     
     if (_text.length == 0) return;

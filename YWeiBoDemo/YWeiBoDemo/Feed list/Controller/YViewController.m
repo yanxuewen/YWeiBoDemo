@@ -34,7 +34,7 @@
         YWBModel *wbModel = [YWBModel modelWithJSON:data];
         DDLogInfo(@"wbModel %@",wbModel);
         for (YWBStatus *status in wbModel.statuses) {
-            status.user.status = status;
+            
             [status y_layout];
             [weakself.wbList addObject:status];
         }
@@ -65,6 +65,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    DDLogInfo(@"row: %zi cellHeight:%.f",indexPath.row,((YWBStatus *)_wbList[indexPath.row]).cellHeight);
     return ((YWBStatus *)_wbList[indexPath.row]).cellHeight;
 }
 

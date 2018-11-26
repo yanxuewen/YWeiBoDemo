@@ -38,6 +38,10 @@
     CGFloat _cellHeight;
 }
 
++ (NSArray *)modelPropertyBlacklist {
+    return @[@"pics",@"retweeted_status",@"toobarM"];
+}
+
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"idStr" : @"id",
              @"idNum" : @"id"
@@ -79,8 +83,15 @@
 }
 
 - (void)y_layout {
+    _user.status = self;
+    if (!_toobarM) {
+        _toobarM = [YWBToolbar new];
+    }
+    _toobarM.status = self;
     [_title y_layout];
     [_user y_layout];
+    [_toobarM y_layout];
+    [self cellHeight];
 }
 
 - (CGFloat)cellHeight {
@@ -88,6 +99,7 @@
         _cellHeight = kWBCellTopMargin;
         _cellHeight += _title.titleHeight;
         _cellHeight += _user.profileHeight;
+        _cellHeight += _toobarM.toolbarHeight;
         _cellHeight += kWBCellToolbarBottomMargin;
     }
     return _cellHeight;
