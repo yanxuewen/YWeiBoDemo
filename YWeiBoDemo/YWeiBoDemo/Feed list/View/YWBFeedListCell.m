@@ -30,6 +30,8 @@
 @property (nonatomic, strong) UIView *retweetBackgroundView;    // 转发容器
 @property (nonatomic, strong) YYLabel *retweetTextLabel;        // 转发文本
 
+@property (nonatomic, assign) BOOL touchRetweetView;
+
 @end
 
 @implementation YWBFeedListCell
@@ -203,6 +205,8 @@
     NSURL *picBg = [YWBStatusHelper defaultURLForImageURL:statusM.pic_bg];
     if (picBg) {
         [_vipBackgroundView setImageWithURL:picBg options:YYWebImageOptionSetImageWithFadeAnimation];
+    } else {
+        _vipBackgroundView.image = nil;
     }
     
     _contentTextLabel.top = top;
@@ -355,5 +359,44 @@
     }
 }
 
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = touches.anyObject;
+    CGPoint p = [touch locationInView:_retweetBackgroundView];
+    BOOL insideRetweet = CGRectContainsPoint(_retweetBackgroundView.bounds, p);
+    
+    if (!_retweetBackgroundView.hidden && insideRetweet) {
+        [(_retweetBackgroundView) performSelector:@selector(setBackgroundColor:) withObject:kWBCellHighlightColor afterDelay:0.15];
+        _touchRetweetView = YES;
+    } else {
+        [(_containerView) performSelector:@selector(setBackgroundColor:) withObject:kWBCellHighlightColor afterDelay:0.15];
+        _touchRetweetView = NO;
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self touchesRestoreBackgroundColor];
+    if (_touchRetweetView) {
+        if ([_delegate respondsToSelector:@selector(cellDidClickRetweet:)]) {
+            [_delegate cellDidClickRetweet:self];
+        }
+    } else {
+        if ([_delegate respondsToSelector:@selector(cellDidClick:)]) {
+            [_delegate cellDidClick:self];
+        }
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self touchesRestoreBackgroundColor];
+}
+
+- (void)touchesRestoreBackgroundColor {
+    [NSObject cancelPreviousPerformRequestsWithTarget:_retweetBackgroundView selector:@selector(setBackgroundColor:) object:kWBCellHighlightColor];
+    [NSObject cancelPreviousPerformRequestsWithTarget:_containerView selector:@selector(setBackgroundColor:) object:kWBCellHighlightColor];
+    
+    _containerView.backgroundColor = [UIColor whiteColor];
+    _retweetBackgroundView.backgroundColor = kWBCellInnerViewColor;
+}
 
 @end
