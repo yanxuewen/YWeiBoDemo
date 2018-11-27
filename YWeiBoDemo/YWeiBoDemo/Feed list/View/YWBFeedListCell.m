@@ -12,16 +12,21 @@
 #import "YWBStatusTitleView.h"
 #import "YWBProfileView.h"
 #import "YWBToolbarView.h"
+#import "YWBCardView.h"
+#import "YWBTagView.h"
 
 @interface YWBFeedListCell ()
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) YWBProfileView *profileView;
+@property (nonatomic, strong) UIImageView *vipBackgroundView;
 @property (nonatomic, strong) YWBStatusTitleView *titleView;
 @property (nonatomic, strong) YWBToolbarView *toolbarView;
+@property (nonatomic, strong) YWBCardView *cardView;
+@property (nonatomic, strong) YWBTagView *tagView;
 
 @property (nonatomic, strong) YYLabel *contentTextLabel;        // 文本
-@property (nonatomic, strong) NSArray<UIView *> *picViews;      // 图片
+@property (nonatomic, strong) NSArray<UIImageView *> *picViews;      // 图片
 @property (nonatomic, strong) UIView *retweetBackgroundView;    // 转发容器
 @property (nonatomic, strong) YYLabel *retweetTextLabel;        // 转发文本
 
@@ -91,9 +96,11 @@
     _profileView.cell = self;
     [_containerView addSubview:_profileView];
     
-    _toolbarView = [YWBToolbarView new];
-    _toolbarView.cell = self;
-    [_containerView addSubview:_toolbarView];
+    _vipBackgroundView = [UIImageView new];
+    _vipBackgroundView.size = CGSizeMake(kScreenWidth, 14.0);
+//    _vipBackgroundView.top = -2;
+    _vipBackgroundView.contentMode = UIViewContentModeTopRight;
+    [_containerView addSubview:_vipBackgroundView];
     
     _retweetBackgroundView = [UIView new];
     _retweetBackgroundView.backgroundColor = kWBCellInnerViewColor;
@@ -130,6 +137,49 @@
         }
     };
     [_containerView addSubview:_retweetTextLabel];
+    
+    NSMutableArray *picViews = [NSMutableArray new];
+    for (int i = 0; i < 9; i++) {
+        UIImageView *imageView = [UIImageView new];
+        imageView.size = CGSizeMake(100, 100);
+        imageView.hidden = YES;
+        imageView.clipsToBounds = YES;
+        imageView.backgroundColor = kWBCellHighlightColor;
+        imageView.exclusiveTouch = YES;
+        [imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
+            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(cell:didClickImageAtIndex:)]) {
+                [weakself.delegate cell:weakself didClickImageAtIndex:i];
+            }
+        }]];
+        
+        UIView *badge = [UIImageView new];
+        badge.userInteractionEnabled = NO;
+        badge.contentMode = UIViewContentModeScaleAspectFit;
+        badge.size = CGSizeMake(56 / 2, 36 / 2);
+        badge.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+        badge.right = imageView.width;
+        badge.bottom = imageView.height;
+        badge.hidden = YES;
+        [imageView addSubview:badge];
+        
+        [picViews addObject:imageView];
+        [_containerView addSubview:imageView];
+    }
+    _picViews = picViews;
+    
+    _cardView = [YWBCardView new];
+    _cardView.hidden = YES;
+    _cardView.cell = self;
+    [_containerView addSubview:_cardView];
+    
+    _tagView = [YWBTagView new];
+    _tagView.hidden = YES;
+    _tagView.cell = self;
+    [_containerView addSubview:_tagView];
+    
+    _toolbarView = [YWBToolbarView new];
+    _toolbarView.cell = self;
+    [_containerView addSubview:_toolbarView];
 }
 
 - (void)setStatusM:(YWBStatus *)statusM {
@@ -150,6 +200,10 @@
     _profileView.userM = statusM.user;
     top += statusM.user.profileHeight;
     
+    NSURL *picBg = [YWBStatusHelper defaultURLForImageURL:statusM.pic_bg];
+    if (picBg) {
+        [_vipBackgroundView setImageWithURL:picBg options:YYWebImageOptionSetImageWithFadeAnimation];
+    }
     
     _contentTextLabel.top = top;
     _contentTextLabel.height = statusM.contentM.textHeight;
@@ -158,6 +212,10 @@
     
     _retweetBackgroundView.hidden = YES;
     _retweetTextLabel.hidden = YES;
+    _cardView.hidden = YES;
+    if (statusM.contentM.picHeight == 0 && statusM.contentM.retweetPicHeight == 0) {
+        [self y_hideImageViews];
+    }
     
     if (statusM.contentM.retweetHeight > 0.1) {
         _retweetBackgroundView.top = top;
@@ -168,11 +226,133 @@
         _retweetTextLabel.height = statusM.contentM.retweetTextHeight;
         _retweetTextLabel.textLayout = statusM.contentM.retweetTextLayout;
         _retweetTextLabel.hidden = NO;
+        
+        if (statusM.contentM.retweetPicHeight > 0.1) {
+            [self y_setImageViewWithTop:_retweetTextLabel.bottom isRetweet:YES];
+        } else {
+            [self y_hideImageViews];
+            if (statusM.contentM.retweetCardHeight > 0.1) {
+                _cardView.top = _retweetTextLabel.bottom;
+                _cardView.hidden = NO;
+                [_cardView setStatus:statusM isRetweet:YES];
+            }
+        }
+        top += statusM.contentM.retweetHeight;
+        
+    } else if (statusM.contentM.picHeight > 0) {
+        [self y_setImageViewWithTop:top isRetweet:NO];
+        top += statusM.contentM.picHeight;
+        
+    } else if (statusM.contentM.cardHeight > 0) {
+        _cardView.top = top;
+        _cardView.hidden = NO;
+        [_cardView setStatus:statusM isRetweet:NO];
+        top += statusM.contentM.cardHeight + kWBCellPadding;
+    }
+    
+    if (statusM.tag_struct.firstObject.tagHeight > 0.1) {
+        _tagView.hidden = NO;
+        [_tagView setTagM:statusM.tag_struct.firstObject];
+//        _tagView.centerY = _containerView.height - kWBCellToolbarHeight - _tagView.tagM.tagHeight / 2;
+        _tagView.top = top;
+        top += _tagView.tagM.tagHeight;
+    } else {
+        _tagView.hidden = YES;
     }
     
     _toolbarView.top = top;
     _toolbarView.toobarM = statusM.toobarM;
     top += statusM.toobarM.toolbarHeight;
+}
+
+- (void)y_hideImageViews {
+    for (UIImageView *imageView in _picViews) {
+        imageView.hidden = YES;
+    }
+}
+
+- (void)y_setImageViewWithTop:(CGFloat)imageTop isRetweet:(BOOL)isRetweet {
+    CGSize picSize = isRetweet ? _statusM.contentM.retweetPicSize : _statusM.contentM.picSize;
+    NSArray *pics = isRetweet ? _statusM.retweeted_status.pics : _statusM.pics;
+    int picsCount = (int)pics.count;
+    
+    for (int i = 0; i < 9; i++) {
+        UIImageView *imageView = _picViews[i];
+        if (i >= picsCount) {
+            [imageView cancelCurrentImageRequest];
+            imageView.hidden = YES;
+        } else {
+            CGPoint origin = {0};
+            switch (picsCount) {
+                case 1: {
+                    origin.x = kWBCellPadding;
+                    origin.y = imageTop;
+                } break;
+                case 4: {
+                    origin.x = kWBCellPadding + (i % 2) * (picSize.width + kWBCellPaddingPic);
+                    origin.y = imageTop + (int)(i / 2) * (picSize.height + kWBCellPaddingPic);
+                } break;
+                default: {
+                    origin.x = kWBCellPadding + (i % 3) * (picSize.width + kWBCellPaddingPic);
+                    origin.y = imageTop + (int)(i / 3) * (picSize.height + kWBCellPaddingPic);
+                } break;
+            }
+            imageView.frame = (CGRect){.origin = origin, .size = picSize};
+            imageView.hidden = NO;
+            
+            YWBPicInfo *pic = pics[i];
+            
+            UIView *badge = imageView.subviews.firstObject;
+            switch (pic.largest.badgeType) {
+                case YWBPicBadgeTypeNone: {
+                    if (badge.layer.contents) {
+                        badge.layer.contents = nil;
+                        badge.hidden = YES;
+                    }
+                } break;
+                case YWBPicBadgeTypeLong: {
+                    badge.layer.contents = (__bridge id)([YWBStatusHelper imageNamed:@"timeline_image_longimage"].CGImage);
+                    badge.hidden = NO;
+                } break;
+                case YWBPicBadgeTypeGIF: {
+                    badge.layer.contents = (__bridge id)([YWBStatusHelper imageNamed:@"timeline_image_gif"].CGImage);
+                    badge.hidden = NO;
+                } break;
+            }
+            
+            kWeakSelf(imageView);
+            [imageView setImageWithURL:pic.bmiddle.url
+                                 placeholder:nil
+                                     options:YYWebImageOptionAvoidSetImage
+                                  completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
+                                      kStrongSelf(imageView);
+                                      
+                                      if (!imageView) return;
+                                      if (image && stage == YYWebImageStageFinished) {
+                                          NSInteger width = pic.bmiddle.width;
+                                          NSInteger height = pic.bmiddle.height;
+                                          CGFloat scale = (height / width) / (imageView.height / imageView.width);
+                                          if (scale < 0.99 || isnan(scale)) { // 宽图把左右两边裁掉
+                                              imageView.contentMode = UIViewContentModeScaleAspectFill;
+                                              imageView.layer.contentsRect = CGRectMake(0, 0, 1, 1);
+                                          } else { // 高图只保留顶部
+                                              imageView.contentMode = UIViewContentModeScaleToFill;
+                                              imageView.layer.contentsRect = CGRectMake(0, 0, 1, (float)width / height);
+                                          }
+                                          if (from != YYWebImageFromMemoryCache) {
+                                              CATransition *transition = [CATransition animation];
+                                              transition.duration = 0.15;
+                                              transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+                                              transition.type = kCATransitionFade;
+                                              [imageView.layer addAnimation:transition forKey:@"YYWebImageFade"];
+                                          }
+                                          
+                                          imageView.image = image;
+                                          
+                                      }
+                                  }];
+        }
+    }
 }
 
 

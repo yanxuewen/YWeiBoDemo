@@ -11,6 +11,7 @@
 #import "YWBUser.h"
 #import "YWBToolbar.h"
 #import "YWBContent.h"
+#import "YWBTagStruct.h"
 
 
 /// 图片标记
@@ -50,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@class YWBURLStruct,YWBPageInfo,YWBTopicStruct,YWBTagStruct;
+@class YWBURLStruct,YWBPageInfo,YWBTopicStruct;
 @interface YWBStatus : YBaseModel
 
 @property (nonatomic, assign) NSInteger mblogtype;
@@ -205,14 +206,5 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface YWBTagStruct : YBaseModel
-
-@property (nonatomic, strong) NSString *tag_name;    ///< 标签名字，例如"上海·上海文庙"
-@property (nonatomic, strong) NSString *tag_scheme;  ///< 链接 sinaweibo://...
-@property (nonatomic, assign) NSInteger tag_type;    ///< 1 地点 2其他
-@property (nonatomic, assign) NSInteger tag_hidden;
-@property (nonatomic, strong) NSURL *url_type_pic;   ///< 需要加 _default
-
-@end
 
 NS_ASSUME_NONNULL_END

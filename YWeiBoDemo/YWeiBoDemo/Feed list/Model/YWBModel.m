@@ -39,7 +39,7 @@
 }
 
 + (NSArray *)modelPropertyBlacklist {
-    return @[@"pics",@"retweeted_status",@"toobarM",@"contentM"];
+    return @[@"pics",@"toobarM",@"contentM"];
 }
 
 + (NSDictionary *)modelCustomPropertyMapper {
@@ -53,7 +53,8 @@
              @"topic_struct" : [YWBTopicStruct class],
              @"tag_struct" : [YWBTagStruct class],
              @"page_info" : [YWBPageInfo class],
-             @"title" : [YWBStatusTitle class]
+             @"title" : [YWBStatusTitle class],
+             @"pic_infos" : [YWBPicInfo class]
              };
 }
 
@@ -96,6 +97,7 @@
     [_title y_layout];
     [_user y_layout];
     [_contentM y_layout];
+    [_tag_struct.firstObject y_layout];
     [_toobarM y_layout];
     [self cellHeight];
 }
@@ -107,7 +109,13 @@
         _cellHeight += _user.profileHeight;
         _cellHeight += _toobarM.toolbarHeight;
         _cellHeight += _contentM.textHeight;
+        _cellHeight += _contentM.picHeight;
         _cellHeight += _contentM.retweetHeight;
+        _cellHeight += _contentM.cardHeight;
+        if (_contentM.retweetHeight < 0.1 && _contentM.cardHeight > 0.1) {
+            _cellHeight += kWBCellPadding;
+        }
+        _cellHeight += _tag_struct.firstObject.tagHeight;
         _cellHeight += kWBCellToolbarBottomMargin;
     }
     return _cellHeight;
@@ -118,6 +126,10 @@
 
 #pragma mark - YWBPicInfo
 @implementation YWBPicInfo
+
++ (NSArray *)modelPropertyBlacklist {
+    return @[@"badgeType"];
+}
 
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{@"thumbnail"   : [YWBPicMetadata class],
@@ -139,6 +151,10 @@
 
 #pragma mark - YWBPicMetadata
 @implementation YWBPicMetadata
+
++ (NSArray *)modelPropertyBlacklist {
+    return @[@"badgeType"];
+}
 
 - (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     if ([_type isEqualToString:@"GIF"]) {
@@ -211,10 +227,3 @@
 
 @end
 
-
-#pragma mark - YWBTagStruct
-@implementation YWBTagStruct
-
-
-
-@end

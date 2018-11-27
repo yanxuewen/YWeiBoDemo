@@ -42,6 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) YYTextLayout *retweetCardTextLayout; //被转发文本
 @property (nonatomic, assign) CGRect retweetCardTextRect;
 
+// 卡片
+@property (nonatomic, assign) CGFloat cardHeight; //卡片高度，0为没卡片
+@property (nonatomic, assign) YWBStatusCardType cardType;
+@property (nonatomic, strong) YYTextLayout *cardTextLayout; //卡片文本
+@property (nonatomic, assign) CGRect cardTextRect;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

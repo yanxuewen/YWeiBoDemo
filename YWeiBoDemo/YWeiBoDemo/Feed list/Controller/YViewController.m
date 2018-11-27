@@ -30,13 +30,15 @@
     _wbList = @[].mutableCopy;
     kWeakSelf(self)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *data = [NSData dataNamed:@"weibo_0.json"];
-        YWBModel *wbModel = [YWBModel modelWithJSON:data];
-        DDLogInfo(@"wbModel %@",wbModel);
-        for (YWBStatus *status in wbModel.statuses) {
-            
-            [status y_layout];
-            [weakself.wbList addObject:status];
+        for (NSInteger i = 0; i <= 7; i++) {
+            NSData *data = [NSData dataNamed:kNSStringFormat(@"weibo_%zi.json",i)];
+            YWBModel *wbModel = [YWBModel modelWithJSON:data];
+//            DDLogInfo(@"wbModel %@",wbModel);
+            for (YWBStatus *status in wbModel.statuses) {
+                
+                [status y_layout];
+                [weakself.wbList addObject:status];
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.tableView reloadData];
@@ -54,7 +56,10 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    _tableView.backgroundColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
+    _tableView.delaysContentTouches = NO;
+    _tableView.canCancelContentTouches = YES;
     [self.view addSubview:_tableView];
     [_tableView registerClass:[YWBFeedListCell class] forCellReuseIdentifier:[YWBFeedListCell className]];
     

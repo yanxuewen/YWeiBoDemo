@@ -38,6 +38,9 @@
 		B4EC5E6121A68A75001BF575 /* YWBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EC5E6021A68A75001BF575 /* YWBModel.m */; };
 		B4F24D6521ACE07D0064EB28 /* YWBContent.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D6421ACE07D0064EB28 /* YWBContent.m */; };
 		B4F24D6821ACE86A0064EB28 /* YWBEmoticon.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D6721ACE86A0064EB28 /* YWBEmoticon.m */; };
+		B4F24D6B21AD2FB80064EB28 /* YWBCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D6A21AD2FB80064EB28 /* YWBCardView.m */; };
+		B4F24D6E21AD373C0064EB28 /* YWBTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D6D21AD373C0064EB28 /* YWBTagView.m */; };
+		B4F24D7121AD37CB0064EB28 /* YWBTagStruct.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D7021AD37CB0064EB28 /* YWBTagStruct.m */; };
 		F422D6E9559686258F34250E /* libPods-YWeiBoDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38EAFA88E7F2704901B0696F /* libPods-YWeiBoDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +98,12 @@
 		B4F24D6421ACE07D0064EB28 /* YWBContent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBContent.m; sourceTree = "<group>"; };
 		B4F24D6621ACE86A0064EB28 /* YWBEmoticon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBEmoticon.h; sourceTree = "<group>"; };
 		B4F24D6721ACE86A0064EB28 /* YWBEmoticon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBEmoticon.m; sourceTree = "<group>"; };
+		B4F24D6921AD2FB80064EB28 /* YWBCardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBCardView.h; sourceTree = "<group>"; };
+		B4F24D6A21AD2FB80064EB28 /* YWBCardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBCardView.m; sourceTree = "<group>"; };
+		B4F24D6C21AD373B0064EB28 /* YWBTagView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBTagView.h; sourceTree = "<group>"; };
+		B4F24D6D21AD373C0064EB28 /* YWBTagView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBTagView.m; sourceTree = "<group>"; };
+		B4F24D6F21AD37CB0064EB28 /* YWBTagStruct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBTagStruct.h; sourceTree = "<group>"; };
+		B4F24D7021AD37CB0064EB28 /* YWBTagStruct.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBTagStruct.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +240,10 @@
 				B432202E21A7F855005027C4 /* YWBStatusTitleView.m */,
 				B48EE48521ABD382007A211E /* YWBToolbarView.h */,
 				B48EE48621ABD382007A211E /* YWBToolbarView.m */,
+				B4F24D6921AD2FB80064EB28 /* YWBCardView.h */,
+				B4F24D6A21AD2FB80064EB28 /* YWBCardView.m */,
+				B4F24D6C21AD373B0064EB28 /* YWBTagView.h */,
+				B4F24D6D21AD373C0064EB28 /* YWBTagView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -246,6 +259,8 @@
 				B432202721A7D92A005027C4 /* YWBStatusTitle.m */,
 				B432202921A7D9E0005027C4 /* YWBUser.h */,
 				B432202A21A7D9E0005027C4 /* YWBUser.m */,
+				B4F24D6F21AD37CB0064EB28 /* YWBTagStruct.h */,
+				B4F24D7021AD37CB0064EB28 /* YWBTagStruct.m */,
 				B48EE48821ABD5C3007A211E /* YWBToolbar.h */,
 				B48EE48921ABD5C3007A211E /* YWBToolbar.m */,
 				B4F24D6621ACE86A0064EB28 /* YWBEmoticon.h */,
@@ -411,12 +426,15 @@
 				B432202121A7AB52005027C4 /* YWBProfileView.m in Sources */,
 				B432202521A7AE80005027C4 /* YWBStatusHelper.m in Sources */,
 				B4340B5F21A5324300A4993E /* YViewController.m in Sources */,
+				B4F24D7121AD37CB0064EB28 /* YWBTagStruct.m in Sources */,
 				B4EC5E6121A68A75001BF575 /* YWBModel.m in Sources */,
 				B4F24D6521ACE07D0064EB28 /* YWBContent.m in Sources */,
 				B4F24D6821ACE86A0064EB28 /* YWBEmoticon.m in Sources */,
 				B432202F21A7F855005027C4 /* YWBStatusTitleView.m in Sources */,
 				B432201E21A79F57005027C4 /* YWBFeedListCell.m in Sources */,
 				B4EC5E5D21A688B5001BF575 /* YBaseModel.m in Sources */,
+				B4F24D6E21AD373C0064EB28 /* YWBTagView.m in Sources */,
+				B4F24D6B21AD2FB80064EB28 /* YWBCardView.m in Sources */,
 				B48EE48A21ABD5C3007A211E /* YWBToolbar.m in Sources */,
 				B4340B6A21A5324500A4993E /* main.m in Sources */,
 				B4340B5C21A5324300A4993E /* AppDelegate.m in Sources */,
