@@ -10,7 +10,7 @@
 #import "YWBStatusTitle.h"
 #import "YWBUser.h"
 #import "YWBToolbar.h"
-
+#import "YWBContent.h"
 
 
 /// 图片标记
@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
 // layout
 @property (nonatomic, assign, readonly) CGFloat cellHeight;
 @property (nonatomic, strong) YWBToolbar *toobarM;
-
+@property (nonatomic, strong) YWBContent *contentM;
 
 @end
 
@@ -148,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *short_url;      ///< 短域名 (原文)
 @property (nonatomic, strong) NSString *ori_url;        ///< 原始链接
 @property (nonatomic, strong) NSString *url_title;      ///< 显示文本，例如"网页链接"，可能需要裁剪(24)
-@property (nonatomic, strong) NSString *url_typePic;    ///< 链接类型的图片URL
+@property (nonatomic, strong) NSString *url_type_pic;    ///< 链接类型的图片URL
 @property (nonatomic, assign) NSInteger url_type;        ///< 0:一般链接 36地点 39视频/图片
 @property (nonatomic, strong) NSString *log;
 @property (nonatomic, strong) NSDictionary *actionlog;
@@ -157,6 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
 //如果是图片，则会有下面这些，可以直接点开看
 @property (nonatomic, strong) NSArray<NSString *> *pic_ids;
 @property (nonatomic, strong) NSDictionary<NSString *, YWBPicInfo *> *pic_infos;
+@property (nonatomic, strong) NSArray<YWBPicInfo *> *pics;
 
 @end
 

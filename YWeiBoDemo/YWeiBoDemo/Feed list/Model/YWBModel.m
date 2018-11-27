@@ -39,7 +39,7 @@
 }
 
 + (NSArray *)modelPropertyBlacklist {
-    return @[@"pics",@"retweeted_status",@"toobarM"];
+    return @[@"pics",@"retweeted_status",@"toobarM",@"contentM"];
 }
 
 + (NSDictionary *)modelCustomPropertyMapper {
@@ -87,9 +87,15 @@
     if (!_toobarM) {
         _toobarM = [YWBToolbar new];
     }
+    if (!_contentM) {
+        _contentM = [YWBContent new];
+    }
     _toobarM.status = self;
+    _contentM.status = self;
+    
     [_title y_layout];
     [_user y_layout];
+    [_contentM y_layout];
     [_toobarM y_layout];
     [self cellHeight];
 }
@@ -100,6 +106,8 @@
         _cellHeight += _title.titleHeight;
         _cellHeight += _user.profileHeight;
         _cellHeight += _toobarM.toolbarHeight;
+        _cellHeight += _contentM.textHeight;
+        _cellHeight += _contentM.retweetHeight;
         _cellHeight += kWBCellToolbarBottomMargin;
     }
     return _cellHeight;
@@ -149,10 +157,32 @@
 #pragma mark - YWBURLStruct
 @implementation YWBURLStruct
 
++ (NSArray *)modelPropertyBlacklist {
+    return @[@"pics"];
+}
+
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{@"pic_infos" : [YWBPicInfo class],
              @"pic_ids" : [NSString class]
              };
+}
+
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+    // 自动 model-mapper 不能完成的，这里可以进行额外处理
+    _pics = nil;
+    if (_pic_ids.count != 0) {
+        NSMutableArray *pics = [NSMutableArray new];
+        for (NSString *picId in _pic_ids) {
+            YWBPicInfo *pic = _pic_infos[picId];
+            if (pic) {
+                [pics addObject:pic];
+            }
+        }
+        _pics = pics;
+    }
+    
+    return YES;
+    
 }
 
 @end

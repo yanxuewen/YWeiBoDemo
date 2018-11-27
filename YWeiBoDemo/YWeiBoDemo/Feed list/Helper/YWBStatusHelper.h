@@ -67,10 +67,24 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YWBStatusHelper : NSObject
 
 + (UIImage *)imageNamed:(NSString *)name;
++ (UIImage *)imageWithPath:(NSString *)path;
 + (NSAttributedString *)attachmentWithFontSize:(CGFloat)fontSize image:(UIImage *)image shrink:(BOOL)shrink;
++ (NSAttributedString *)attachmentWithFontSize:(CGFloat)fontSize imageURL:(NSString *)imageURL shrink:(BOOL)shrink;
 + (NSString *)stringWithTimelineDate:(NSDate *)date;
-
++ (NSURL *)defaultURLForImageURL:(id)imageURL;
 + (YYWebImageManager *)avatarImageManager;
+
+/// At正则 例如 @王思聪
++ (NSRegularExpression *)regexAt;
+
+/// 话题正则 例如 #暖暖环游世界#
++ (NSRegularExpression *)regexTopic;
+
+/// 表情正则 例如 [偷笑]
++ (NSRegularExpression *)regexEmoticon;
+
+/// 表情字典 key:[偷笑] value:ImagePath
++ (NSDictionary *)emoticonDic;
 
 @end
 

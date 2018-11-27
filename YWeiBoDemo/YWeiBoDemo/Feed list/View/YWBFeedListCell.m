@@ -8,6 +8,7 @@
 
 #import "YWBFeedListCell.h"
 
+#import "YWBModel.h"
 #import "YWBStatusTitleView.h"
 #import "YWBProfileView.h"
 #import "YWBToolbarView.h"
@@ -18,6 +19,11 @@
 @property (nonatomic, strong) YWBProfileView *profileView;
 @property (nonatomic, strong) YWBStatusTitleView *titleView;
 @property (nonatomic, strong) YWBToolbarView *toolbarView;
+
+@property (nonatomic, strong) YYLabel *contentTextLabel;        // 文本
+@property (nonatomic, strong) NSArray<UIView *> *picViews;      // 图片
+@property (nonatomic, strong) UIView *retweetBackgroundView;    // 转发容器
+@property (nonatomic, strong) YYLabel *retweetTextLabel;        // 转发文本
 
 @end
 
@@ -44,6 +50,9 @@
     _containerView.width = kScreenWidth;
     _containerView.height = 1;
     _containerView.backgroundColor = KWhiteColor;
+    
+    kWeakSelf(self);
+    
     static UIImage *topLineBG, *bottomLineBG;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -86,6 +95,41 @@
     _toolbarView.cell = self;
     [_containerView addSubview:_toolbarView];
     
+    _retweetBackgroundView = [UIView new];
+    _retweetBackgroundView.backgroundColor = kWBCellInnerViewColor;
+    _retweetBackgroundView.width = kScreenWidth;
+    [_containerView addSubview:_retweetBackgroundView];
+    
+    _contentTextLabel = [YYLabel new];
+    _contentTextLabel.left = kWBCellPadding;
+    _contentTextLabel.width = kWBCellContentWidth;
+    _contentTextLabel.textVerticalAlignment = YYTextVerticalAlignmentTop;
+    _contentTextLabel.displaysAsynchronously = YES;
+    _contentTextLabel.ignoreCommonProperties = YES;
+    _contentTextLabel.fadeOnAsynchronouslyDisplay = NO;
+    _contentTextLabel.fadeOnHighlight = NO;
+    _contentTextLabel.highlightTapAction = ^(UIView *containerView, NSAttributedString *text, NSRange range, CGRect rect) {
+        if ([weakself.delegate respondsToSelector:@selector(cell:didClickInLabel:textRange:)]) {
+            [weakself.delegate cell:weakself didClickInLabel:(YYLabel *)containerView textRange:range];
+        }
+    };
+    [_containerView addSubview:_contentTextLabel];
+    
+    
+    _retweetTextLabel = [YYLabel new];
+    _retweetTextLabel.left = kWBCellPadding;
+    _retweetTextLabel.width = kWBCellContentWidth;
+    _retweetTextLabel.textVerticalAlignment = YYTextVerticalAlignmentTop;
+    _retweetTextLabel.displaysAsynchronously = YES;
+    _retweetTextLabel.ignoreCommonProperties = YES;
+    _retweetTextLabel.fadeOnAsynchronouslyDisplay = NO;
+    _retweetTextLabel.fadeOnHighlight = NO;
+    _retweetTextLabel.highlightTapAction = ^(UIView *containerView, NSAttributedString *text, NSRange range, CGRect rect) {
+        if ([weakself.delegate respondsToSelector:@selector(cell:didClickInLabel:textRange:)]) {
+            [weakself.delegate cell:weakself didClickInLabel:(YYLabel *)containerView textRange:range];
+        }
+    };
+    [_containerView addSubview:_retweetTextLabel];
 }
 
 - (void)setStatusM:(YWBStatus *)statusM {
@@ -105,6 +149,26 @@
     _profileView.top = top;
     _profileView.userM = statusM.user;
     top += statusM.user.profileHeight;
+    
+    
+    _contentTextLabel.top = top;
+    _contentTextLabel.height = statusM.contentM.textHeight;
+    _contentTextLabel.textLayout = statusM.contentM.textLayout;
+    top += statusM.contentM.textHeight;
+    
+    _retweetBackgroundView.hidden = YES;
+    _retweetTextLabel.hidden = YES;
+    
+    if (statusM.contentM.retweetHeight > 0.1) {
+        _retweetBackgroundView.top = top;
+        _retweetBackgroundView.height = statusM.contentM.retweetHeight;
+        _retweetBackgroundView.hidden = NO;
+        
+        _retweetTextLabel.top = top;
+        _retweetTextLabel.height = statusM.contentM.retweetTextHeight;
+        _retweetTextLabel.textLayout = statusM.contentM.retweetTextLayout;
+        _retweetTextLabel.hidden = NO;
+    }
     
     _toolbarView.top = top;
     _toolbarView.toobarM = statusM.toobarM;

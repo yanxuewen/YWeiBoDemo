@@ -7,6 +7,35 @@
 //
 
 #import "YWBStatusHelper.h"
+#import "YWBEmoticon.h"
+
+/**
+ 微博的文本中，某些嵌入的图片需要从网上下载，这里简单做个封装
+ */
+@interface WBTextImageViewAttachment : YYTextAttachment
+@property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic, assign) CGSize size;
+@end
+
+@implementation WBTextImageViewAttachment {
+    UIImageView *_imageView;
+}
+- (void)setContent:(id)content {
+    _imageView = content;
+}
+- (id)content {
+    /// UIImageView 只能在主线程访问
+    if (pthread_main_np() == 0) return nil;
+    if (_imageView) return _imageView;
+    
+    /// 第一次获取时 (应该是在文本渲染完成，需要添加附件视图时)，初始化图片视图，并下载图片
+    /// 这里改成 YYAnimatedImageView 就能支持 GIF/APNG/WebP 动画了
+    _imageView = [UIImageView new];
+    _imageView.size = _size;
+    [_imageView setImageWithURL:_imageURL placeholder:nil];
+    return _imageView;
+}
+@end
 
 @implementation YWBStatusHelper
 
@@ -57,6 +86,27 @@
     return image;
 }
 
++ (UIImage *)imageWithPath:(NSString *)path {
+    if (!path) return nil;
+    UIImage *image = [[self imageCache] objectForKey:path];
+    if (image) return image;
+    if (path.pathScale == 1) {
+        // 查找 @2x @3x 的图片
+        NSArray *scales = [NSBundle preferredScales];
+        for (NSNumber *scale in scales) {
+            image = [UIImage imageWithContentsOfFile:[path stringByAppendingPathScale:scale.floatValue]];
+            if (image) break;
+        }
+    } else {
+        image = [UIImage imageWithContentsOfFile:path];
+    }
+    if (image) {
+        image = [image imageByDecoded];
+        [[self imageCache] setObject:image forKey:path];
+    }
+    return image;
+}
+
 + (NSAttributedString *)attachmentWithFontSize:(CGFloat)fontSize image:(UIImage *)image shrink:(BOOL)shrink {
     
     //    CGFloat ascent = YYEmojiGetAscentWithFontSize(fontSize);
@@ -98,6 +148,50 @@
     
     return atr;
 }
+
++ (NSAttributedString *)attachmentWithFontSize:(CGFloat)fontSize imageURL:(NSString *)imageURL shrink:(BOOL)shrink {
+    /*
+     微博 URL 嵌入的图片，比临近的字体要小一圈。。
+     这里模拟一下 Heiti SC 字体，然后把图片缩小一下。
+     */
+    CGFloat ascent = fontSize * 0.86;
+    CGFloat descent = fontSize * 0.14;
+    CGRect bounding = CGRectMake(0, -0.14 * fontSize, fontSize, fontSize);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(ascent - (bounding.size.height + bounding.origin.y), 0, descent + bounding.origin.y, 0);
+    CGSize size = CGSizeMake(fontSize, fontSize);
+    
+    if (shrink) {
+        // 缩小~
+        CGFloat scale = 1 / 10.0;
+        contentInsets.top += fontSize * scale;
+        contentInsets.bottom += fontSize * scale;
+        contentInsets.left += fontSize * scale;
+        contentInsets.right += fontSize * scale;
+        contentInsets = UIEdgeInsetPixelFloor(contentInsets);
+        size = CGSizeMake(fontSize - fontSize * scale * 2, fontSize - fontSize * scale * 2);
+        size = CGSizePixelRound(size);
+    }
+    
+    YYTextRunDelegate *delegate = [YYTextRunDelegate new];
+    delegate.ascent = ascent;
+    delegate.descent = descent;
+    delegate.width = bounding.size.width;
+    
+    WBTextImageViewAttachment *attachment = [WBTextImageViewAttachment new];
+    attachment.contentMode = UIViewContentModeScaleAspectFit;
+    attachment.contentInsets = contentInsets;
+    attachment.size = size;
+    attachment.imageURL = [YWBStatusHelper defaultURLForImageURL:imageURL];
+    
+    NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:YYTextAttachmentToken];
+    [atr setTextAttachment:attachment range:NSMakeRange(0, atr.length)];
+    CTRunDelegateRef ctDelegate = delegate.CTRunDelegate;
+    [atr setRunDelegate:ctDelegate range:NSMakeRange(0, atr.length)];
+    if (ctDelegate) CFRelease(ctDelegate);
+    
+    return atr;
+}
+
 
 #pragma mark -
 + (NSString *)stringWithTimelineDate:(NSDate *)date {
@@ -141,6 +235,45 @@
     }
 }
 
++ (NSURL *)defaultURLForImageURL:(id)imageURL {
+    /*
+     微博 API 提供的图片 URL 有时并不能直接用，需要做一些字符串替换：
+     http://u1.sinaimg.cn/upload/2014/11/04/common_icon_membership_level6.png //input
+     http://u1.sinaimg.cn/upload/2014/11/04/common_icon_membership_level6_default.png //output
+     
+     http://img.t.sinajs.cn/t6/skin/public/feed_cover/star_003_y.png?version=2015080302 //input
+     http://img.t.sinajs.cn/t6/skin/public/feed_cover/star_003_os7.png?version=2015080302 //output
+     */
+    
+    if (!imageURL) return nil;
+    NSString *link = nil;
+    if ([imageURL isKindOfClass:[NSURL class]]) {
+        link = ((NSURL *)imageURL).absoluteString;
+    } else if ([imageURL isKindOfClass:[NSString class]]) {
+        link = imageURL;
+    }
+    if (link.length == 0) return nil;
+    
+    if ([link hasSuffix:@".png"]) {
+        // add "_default"
+        if (![link hasSuffix:@"_default.png"]) {
+            NSString *sub = [link substringToIndex:link.length - 4];
+            link = [sub stringByAppendingFormat:@"_default.png"];
+        }
+    } else {
+        // replace "_y.png" with "_os7.png"
+        NSRange range = [link rangeOfString:@"_y.png?version"];
+        if (range.location != NSNotFound) {
+            NSMutableString *mutable = link.mutableCopy;
+            [mutable replaceCharactersInRange:NSMakeRange(range.location + 1, 1) withString:@"os7"];
+            link = mutable;
+        }
+    }
+    
+    return [NSURL URLWithString:link];
+}
+
+
 + (YYWebImageManager *)avatarImageManager {
     static YYWebImageManager *manager;
     static dispatch_once_t onceToken;
@@ -155,5 +288,165 @@
     });
     return manager;
 }
+
++ (NSRegularExpression *)regexAt {
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // 微博的 At 只允许 英文数字下划线连字符，和 unicode 4E00~9FA5 范围内的中文字符，这里保持和微博一致。。
+        // 目前中文字符范围比这个大
+        regex = [NSRegularExpression regularExpressionWithPattern:@"@[-_a-zA-Z0-9\u4E00-\u9FA5]+" options:kNilOptions error:NULL];
+    });
+    return regex;
+}
+
++ (NSRegularExpression *)regexTopic {
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        regex = [NSRegularExpression regularExpressionWithPattern:@"#[^@#]+?#" options:kNilOptions error:NULL];
+    });
+    return regex;
+}
+
++ (NSRegularExpression *)regexEmoticon {
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        regex = [NSRegularExpression regularExpressionWithPattern:@"\\[[^ \\[\\]]+?\\]" options:kNilOptions error:NULL];
+    });
+    return regex;
+}
+
++ (NSDictionary *)emoticonDic {
+    static NSMutableDictionary *dic;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *emoticonBundlePath = [[NSBundle mainBundle] pathForResource:@"EmoticonWeibo" ofType:@"bundle"];
+        dic = [self _emoticonDicFromPath:emoticonBundlePath];
+    });
+    return dic;
+}
+
++ (NSMutableDictionary *)_emoticonDicFromPath:(NSString *)path {
+    NSMutableDictionary *dic = [NSMutableDictionary new];
+    YWBEmoticonGroup *group = nil;
+    NSString *jsonPath = [path stringByAppendingPathComponent:@"info.json"];
+    NSData *json = [NSData dataWithContentsOfFile:jsonPath];
+    if (json.length) {
+        group = [YWBEmoticonGroup modelWithJSON:json];
+    }
+    if (!group) {
+        NSString *plistPath = [path stringByAppendingPathComponent:@"info.plist"];
+        NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        if (plist.count) {
+            group = [YWBEmoticonGroup modelWithJSON:plist];
+        }
+    }
+    for (YWBEmoticon *emoticon in group.emoticons) {
+        if (emoticon.png.length == 0) continue;
+        NSString *pngPath = [path stringByAppendingPathComponent:emoticon.png];
+        if (emoticon.chs) dic[emoticon.chs] = pngPath;
+        if (emoticon.cht) dic[emoticon.cht] = pngPath;
+    }
+    
+    NSArray *folders = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
+    for (NSString *folder in folders) {
+        if (folder.length == 0) continue;
+        NSDictionary *subDic = [self _emoticonDicFromPath:[path stringByAppendingPathComponent:folder]];
+        if (subDic) {
+            [dic addEntriesFromDictionary:subDic];
+        }
+    }
+    return dic;
+}
+
++ (NSArray<YWBEmoticonGroup *> *)emoticonGroups {
+    static NSMutableArray *groups;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *emoticonBundlePath = [[NSBundle mainBundle] pathForResource:@"EmoticonWeibo" ofType:@"bundle"];
+        NSString *emoticonPlistPath = [emoticonBundlePath stringByAppendingPathComponent:@"emoticons.plist"];
+        NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:emoticonPlistPath];
+        NSArray *packages = plist[@"packages"];
+        groups = (NSMutableArray *)[NSArray modelArrayWithClass:[YWBEmoticonGroup class] json:packages];
+        
+        NSMutableDictionary *groupDic = [NSMutableDictionary new];
+        for (int i = 0, max = (int)groups.count; i < max; i++) {
+            YWBEmoticonGroup *group = groups[i];
+            if (group.groupID.length == 0) {
+                [groups removeObjectAtIndex:i];
+                i--;
+                max--;
+                continue;
+            }
+            NSString *path = [emoticonBundlePath stringByAppendingPathComponent:group.groupID];
+            NSString *infoPlistPath = [path stringByAppendingPathComponent:@"info.plist"];
+            NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:infoPlistPath];
+            [group modelSetWithDictionary:info];
+            if (group.emoticons.count == 0) {
+                i--;
+                max--;
+                continue;
+            }
+            groupDic[group.groupID] = group;
+        }
+        
+        NSArray<NSString *> *additionals = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[emoticonBundlePath stringByAppendingPathComponent:@"additional"] error:nil];
+        for (NSString *path in additionals) {
+            YWBEmoticonGroup *group = groupDic[path];
+            if (!group) continue;
+            NSString *infoJSONPath = [[[emoticonBundlePath stringByAppendingPathComponent:@"additional"] stringByAppendingPathComponent:path] stringByAppendingPathComponent:@"info.json"];
+            NSData *infoJSON = [NSData dataWithContentsOfFile:infoJSONPath];
+            YWBEmoticonGroup *addGroup = [YWBEmoticonGroup modelWithJSON:infoJSON];
+            if (addGroup.emoticons.count) {
+                for (YWBEmoticon *emoticon in addGroup.emoticons) {
+                    emoticon.group = group;
+                }
+                [((NSMutableArray *)group.emoticons) insertObjects:addGroup.emoticons atIndex:0];
+            }
+        }
+    });
+    return groups;
+}
+
+
+/*
+ weibo.app 里面的正则，有兴趣的可以参考下：
+ 
+ HTTP链接 (例如 http://www.weibo.com ):
+ ([hH]ttp[s]{0,1})://[a-zA-Z0-9\.\-]+\.([a-zA-Z]{2,4})(:\d+)?(/[a-zA-Z0-9\-~!@#$%^&*+?:_/=<>.',;]*)?
+ ([hH]ttp[s]{0,1})://[a-zA-Z0-9\.\-]+\.([a-zA-Z]{2,4})(:\d+)?(/[a-zA-Z0-9\-~!@#$%^&*+?:_/=<>]*)?
+ (?i)https?://[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+([-A-Z0-9a-z_\$\.\+!\*\(\)/,:;@&=\?~#%]*)*
+ ^http?://[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(\/[\w-. \/\?%@&+=\u4e00-\u9fa5]*)?$
+ 
+ 链接 (例如 www.baidu.com/s?wd=test ):
+ ^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+([-A-Z0-9a-z_\$\.\+!\*\(\)/,:;@&=\?~#%]*)*
+ 
+ 邮箱 (例如 sjobs@apple.com ):
+ \b([a-zA-Z0-9%_.+\-]{1,32})@([a-zA-Z0-9.\-]+?\.[a-zA-Z]{2,6})\b
+ \b([a-zA-Z0-9%_.+\-]+)@([a-zA-Z0-9.\-]+?\.[a-zA-Z]{2,6})\b
+ ([a-zA-Z0-9%_.+\-]+)@([a-zA-Z0-9.\-]+?\.[a-zA-Z]{2,6})
+ 
+ 电话号码 (例如 18612345678):
+ ^[1-9][0-9]{4,11}$
+ 
+ At (例如 @王思聪 ):
+ @([\x{4e00}-\x{9fa5}A-Za-z0-9_\-]+)
+ 
+ 话题 (例如 #奇葩说# ):
+ #([^@]+?)#
+ 
+ 表情 (例如 [呵呵] ):
+ \[([^ \[]*?)]
+ 
+ 匹配单个字符 (中英文数字下划线连字符)
+ [\x{4e00}-\x{9fa5}A-Za-z0-9_\-]
+ 
+ 匹配回复 (例如 回复@王思聪: ):
+ \x{56de}\x{590d}@([\x{4e00}-\x{9fa5}A-Za-z0-9_\-]+)(\x{0020}\x{7684}\x{8d5e})?:
+ 
+ */
+
 
 @end
