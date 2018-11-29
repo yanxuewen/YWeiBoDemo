@@ -18,4 +18,8 @@
 - (BOOL)isEqual:(id)object { return [self modelIsEqual:object]; }
 - (NSString *)description { return [self modelDescription]; }
 
+- (void)y_layout {
+    NSAssert(0, @"自己实现 layout 方法");
+}
+
 @end

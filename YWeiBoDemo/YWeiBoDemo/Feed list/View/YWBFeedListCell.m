@@ -146,8 +146,10 @@
         imageView.size = CGSizeMake(100, 100);
         imageView.hidden = YES;
         imageView.clipsToBounds = YES;
+        imageView.userInteractionEnabled = YES;
         imageView.backgroundColor = kWBCellHighlightColor;
         imageView.exclusiveTouch = YES;
+        
         [imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
             if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(cell:didClickImageAtIndex:)]) {
                 [weakself.delegate cell:weakself didClickImageAtIndex:i];
@@ -330,18 +332,18 @@
                                      options:YYWebImageOptionAvoidSetImage
                                   completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
                                       kStrongSelf(imageView);
-                                      
+
                                       if (!imageView) return;
                                       if (image && stage == YYWebImageStageFinished) {
                                           NSInteger width = pic.bmiddle.width;
                                           NSInteger height = pic.bmiddle.height;
                                           CGFloat scale = (height / width) / (imageView.height / imageView.width);
                                           if (scale < 0.99 || isnan(scale)) { // 宽图把左右两边裁掉
-                                              imageView.contentMode = UIViewContentModeScaleAspectFill;
-                                              imageView.layer.contentsRect = CGRectMake(0, 0, 1, 1);
+                                              imageView.contentMode = UIViewContentModeScaleAspectFit;
+                                              
                                           } else { // 高图只保留顶部
-                                              imageView.contentMode = UIViewContentModeScaleToFill;
-                                              imageView.layer.contentsRect = CGRectMake(0, 0, 1, (float)width / height);
+                                              imageView.contentMode = UIViewContentModeScaleAspectFill;
+                                             
                                           }
                                           if (from != YYWebImageFromMemoryCache) {
                                               CATransition *transition = [CATransition animation];
@@ -350,9 +352,9 @@
                                               transition.type = kCATransitionFade;
                                               [imageView.layer addAnimation:transition forKey:@"YYWebImageFade"];
                                           }
-                                          
+
                                           imageView.image = image;
-                                          
+
                                       }
                                   }];
         }

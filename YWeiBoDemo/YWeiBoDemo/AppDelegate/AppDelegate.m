@@ -21,6 +21,7 @@
     
     [self initWindow];
     [self initDDLog];
+    [self initWithNavigationBar];
     [self monitorNetworkStatus];
     
     YViewController *mainVC = [[YViewController alloc] init];

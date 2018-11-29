@@ -33,6 +33,18 @@
     [DDLog addLogger:fileLogger];
 }
 
+- (void)initWithNavigationBar {
+    
+    UINavigationBar *navBar = [UINavigationBar appearance];
+    UIColor *color = kRandomColor;
+    [navBar setBarTintColor:color];
+    [navBar setTintColor:color];
+    [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName :KWhiteColor, NSFontAttributeName : [UIFont systemFontOfSize:18]}];
+    
+    [navBar setBackgroundImage:[UIImage imageWithColor:color] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [navBar setShadowImage:[UIImage new]];//去掉阴影线
+}
+
 #pragma mark - 网络监控
 - (void)monitorNetworkStatus {
     RealReachability *reach = [RealReachability sharedInstance];

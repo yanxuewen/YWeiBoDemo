@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)initWindow;
 - (void)initDDLog;
 - (void)monitorNetworkStatus;   /// 监听网络状态
+- (void)initWithNavigationBar;
 
 // AppDelegate
 + (AppDelegate *)shareAppDelegate;

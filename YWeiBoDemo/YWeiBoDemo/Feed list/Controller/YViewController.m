@@ -24,7 +24,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = kWBCellBackgroundColor;
     self.navigationItem.title = @"微博 Demo";
-   
     
     [self setupTableView];
     _wbList = @[].mutableCopy;
@@ -35,7 +34,7 @@
             YWBModel *wbModel = [YWBModel modelWithJSON:data];
 //            DDLogInfo(@"wbModel %@",wbModel);
             for (YWBStatus *status in wbModel.statuses) {
-                
+
                 [status y_layout];
                 [weakself.wbList addObject:status];
             }
@@ -44,13 +43,12 @@
             [weakself.tableView reloadData];
         });
     });
-    
-    
+   
 }
 
 - (void)setupTableView {
     _tableView = [UITableView new];
-    _tableView.top = kTopHeight;
+    _tableView.top = 0;//kTopHeight;
     _tableView.width = kScreenWidth;
     _tableView.height = kScreenHeight -kTopHeight;
     _tableView.delegate = self;
@@ -59,6 +57,7 @@
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     _tableView.delaysContentTouches = NO;
+    
     _tableView.canCancelContentTouches = YES;
     [self.view addSubview:_tableView];
     [_tableView registerClass:[YWBFeedListCell class] forCellReuseIdentifier:[YWBFeedListCell className]];
