@@ -13,7 +13,7 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 
 #import <CocoaLumberjack.h>
-#import <SDWebImage/UIImageView+WebCache.h>
+//#import <SDWebImage/UIImageView+WebCache.h>
 #import <IQKeyboardManager.h>
 #import <MJRefresh.h>
 //#import <MJExtension.h>
