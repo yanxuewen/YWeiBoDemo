@@ -80,4 +80,23 @@
     return cell;
 }
 
+#pragma mark - Cell delegate
+- (void)cellDidClick:(YWBFeedListCell *)cell {
+    NSLog(@"%s cell.status.id:%@",__func__,cell.statusM.idStr);
+}
+
+- (void)cellDidClickTag:(YWBFeedListCell *)cell {
+    NSLog(@"%s",__func__);
+}
+
+- (void)cell:(YWBFeedListCell *)cell didClickUser:(YWBUser *)user {
+    NSLog(@"%s cell.user.id:%@",__func__,user.idStr);
+}
+
+- (void)cell:(YWBFeedListCell *)cell didClickImageAtIndex:(NSUInteger)index {
+    NSLog(@"%s  index:%zi",__func__,index);
+}
+
+
+
 @end

@@ -586,10 +586,7 @@
 				GCC_PREFIX_HEADER = "YWeiBoDemo/Supporting Files/YWeiBoDemo.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/YWeiBoDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxw.YWeiBoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -606,10 +603,7 @@
 				GCC_PREFIX_HEADER = "YWeiBoDemo/Supporting Files/YWeiBoDemo.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/YWeiBoDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxw.YWeiBoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

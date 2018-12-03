@@ -113,7 +113,7 @@
     text.font = font;
     text.color = textColor;
     
-    // 根据 urlStruct 中每个 URL.short_url 来匹配文本，将其替换为图标+友好描述
+    // 根据 url_struct 中每个 URL.short_url 来匹配文本，将其替换为图标+友好描述
     for (YWBURLStruct *wburl in status.url_struct) {
         if (wburl.short_url.length == 0) continue;
         if (wburl.url_title.length == 0) continue;
