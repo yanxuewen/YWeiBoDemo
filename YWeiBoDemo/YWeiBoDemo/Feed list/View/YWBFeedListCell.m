@@ -26,7 +26,7 @@
 @property (nonatomic, strong) YWBTagView *tagView;
 
 @property (nonatomic, strong) YYLabel *contentTextLabel;        // 文本
-@property (nonatomic, strong) NSArray<UIImageView *> *picViews;      // 图片
+
 @property (nonatomic, strong) UIView *retweetBackgroundView;    // 转发容器
 @property (nonatomic, strong) YYLabel *retweetTextLabel;        // 转发文本
 

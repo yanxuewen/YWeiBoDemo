@@ -36,7 +36,7 @@
 - (void)initWithNavigationBar {
     
     UINavigationBar *navBar = [UINavigationBar appearance];
-    UIColor *color = kRandomColor;
+    UIColor *color = KRGBColor(67, 138, 216);
     [navBar setBarTintColor:color];
     [navBar setTintColor:color];
     [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName :KWhiteColor, NSFontAttributeName : [UIFont systemFontOfSize:18]}];

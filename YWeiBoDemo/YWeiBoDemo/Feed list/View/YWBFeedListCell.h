@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YWBFeedListCell : UITableViewCell
 
 @property (nonatomic, strong) YWBStatus *statusM;
+@property (nonatomic, strong) NSArray<UIImageView *> *picViews;      // 图片
 
 @property (nonatomic, weak) id<YWBStatusCellDelegate> delegate;
 

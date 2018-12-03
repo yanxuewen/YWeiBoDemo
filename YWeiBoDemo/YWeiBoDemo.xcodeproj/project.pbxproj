@@ -16,7 +16,6 @@
 		B432202F21A7F855005027C4 /* YWBStatusTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B432202E21A7F855005027C4 /* YWBStatusTitleView.m */; };
 		B4340B5C21A5324300A4993E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B4340B5B21A5324300A4993E /* AppDelegate.m */; };
 		B4340B5F21A5324300A4993E /* YViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4340B5E21A5324300A4993E /* YViewController.m */; };
-		B4340B6221A5324300A4993E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4340B6021A5324300A4993E /* Main.storyboard */; };
 		B4340B6421A5324500A4993E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4340B6321A5324500A4993E /* Assets.xcassets */; };
 		B4340B6721A5324500A4993E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4340B6521A5324500A4993E /* LaunchScreen.storyboard */; };
 		B4340B6A21A5324500A4993E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B4340B6921A5324500A4993E /* main.m */; };
@@ -31,6 +30,9 @@
 		B4340B8821A5376500A4993E /* weibo_1.json in Resources */ = {isa = PBXBuildFile; fileRef = B4340B7C21A5376400A4993E /* weibo_1.json */; };
 		B4340B8921A5376500A4993E /* weibo_0.json in Resources */ = {isa = PBXBuildFile; fileRef = B4340B7D21A5376400A4993E /* weibo_0.json */; };
 		B4340B8A21A5376500A4993E /* Weibo@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B4340B7E21A5376400A4993E /* Weibo@3x.jpg */; };
+		B478B3D921B4D41400582E1F /* YPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = B478B3D821B4D41400582E1F /* YPhotoBrowser.m */; };
+		B478B3DC21B4D45400582E1F /* YPhotoBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B478B3DB21B4D45400582E1F /* YPhotoBrowserCell.m */; };
+		B478B3DF21B503EF00582E1F /* YPhotoBrowserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B478B3DE21B503EF00582E1F /* YPhotoBrowserModel.m */; };
 		B48EE48721ABD382007A211E /* YWBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B48EE48621ABD382007A211E /* YWBToolbarView.m */; };
 		B48EE48A21ABD5C3007A211E /* YWBToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = B48EE48921ABD5C3007A211E /* YWBToolbar.m */; };
 		B4EC5E5621A642B1001BF575 /* AppDelegate+AppService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EC5E5521A642B1001BF575 /* AppDelegate+AppService.m */; };
@@ -64,7 +66,6 @@
 		B4340B5B21A5324300A4993E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B4340B5D21A5324300A4993E /* YViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YViewController.h; sourceTree = "<group>"; };
 		B4340B5E21A5324300A4993E /* YViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YViewController.m; sourceTree = "<group>"; };
-		B4340B6121A5324300A4993E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B4340B6321A5324500A4993E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B4340B6621A5324500A4993E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B4340B6821A5324500A4993E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -82,6 +83,12 @@
 		B4340B7E21A5376400A4993E /* Weibo@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Weibo@3x.jpg"; sourceTree = "<group>"; };
 		B4340B8B21A5378100A4993E /* ResourceWeibo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ResourceWeibo.bundle; sourceTree = "<group>"; };
 		B4340B8E21A543B900A4993E /* YWeiBoDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWeiBoDemo.pch; sourceTree = "<group>"; };
+		B478B3D721B4D41400582E1F /* YPhotoBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPhotoBrowser.h; sourceTree = "<group>"; };
+		B478B3D821B4D41400582E1F /* YPhotoBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YPhotoBrowser.m; sourceTree = "<group>"; };
+		B478B3DA21B4D45400582E1F /* YPhotoBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPhotoBrowserCell.h; sourceTree = "<group>"; };
+		B478B3DB21B4D45400582E1F /* YPhotoBrowserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YPhotoBrowserCell.m; sourceTree = "<group>"; };
+		B478B3DD21B503EF00582E1F /* YPhotoBrowserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPhotoBrowserModel.h; sourceTree = "<group>"; };
+		B478B3DE21B503EF00582E1F /* YPhotoBrowserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YPhotoBrowserModel.m; sourceTree = "<group>"; };
 		B48C89AA41D9A12F4464AEE6 /* Pods-YWeiBoDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YWeiBoDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YWeiBoDemo/Pods-YWeiBoDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		B48EE48521ABD382007A211E /* YWBToolbarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBToolbarView.h; sourceTree = "<group>"; };
 		B48EE48621ABD382007A211E /* YWBToolbarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBToolbarView.m; sourceTree = "<group>"; };
@@ -161,6 +168,7 @@
 				B4340B7221A5376400A4993E /* Resources */,
 				B4EC5E5721A64440001BF575 /* Define */,
 				B4EC5E5A21A68899001BF575 /* Base */,
+				B478B3D521B4D3CB00582E1F /* Other */,
 				B4340B7121A5371700A4993E /* Supporting Files */,
 			);
 			path = YWeiBoDemo;
@@ -169,7 +177,6 @@
 		B4340B7121A5371700A4993E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				B4340B6021A5324300A4993E /* Main.storyboard */,
 				B4340B6321A5324500A4993E /* Assets.xcassets */,
 				B4340B6521A5324500A4993E /* LaunchScreen.storyboard */,
 				B4340B6821A5324500A4993E /* Info.plist */,
@@ -196,6 +203,27 @@
 				B4340B7E21A5376400A4993E /* Weibo@3x.jpg */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B478B3D521B4D3CB00582E1F /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				B478B3D621B4D3F800582E1F /* YPhotoBrowser */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		B478B3D621B4D3F800582E1F /* YPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				B478B3D721B4D41400582E1F /* YPhotoBrowser.h */,
+				B478B3D821B4D41400582E1F /* YPhotoBrowser.m */,
+				B478B3DA21B4D45400582E1F /* YPhotoBrowserCell.h */,
+				B478B3DB21B4D45400582E1F /* YPhotoBrowserCell.m */,
+				B478B3DD21B503EF00582E1F /* YPhotoBrowserModel.h */,
+				B478B3DE21B503EF00582E1F /* YPhotoBrowserModel.m */,
+			);
+			path = YPhotoBrowser;
 			sourceTree = "<group>";
 		};
 		B4EC5E4F21A63FF1001BF575 /* AppDelegate */ = {
@@ -368,7 +396,6 @@
 				B4340B8721A5376500A4993E /* EmoticonWeibo.bundle in Resources */,
 				B4340B8121A5376500A4993E /* weibo_5.json in Resources */,
 				B4340B8421A5376500A4993E /* weibo_7.json in Resources */,
-				B4340B6221A5324300A4993E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,10 +460,13 @@
 				B432202F21A7F855005027C4 /* YWBStatusTitleView.m in Sources */,
 				B432201E21A79F57005027C4 /* YWBFeedListCell.m in Sources */,
 				B4EC5E5D21A688B5001BF575 /* YBaseModel.m in Sources */,
+				B478B3DF21B503EF00582E1F /* YPhotoBrowserModel.m in Sources */,
+				B478B3DC21B4D45400582E1F /* YPhotoBrowserCell.m in Sources */,
 				B4F24D6E21AD373C0064EB28 /* YWBTagView.m in Sources */,
 				B4F24D6B21AD2FB80064EB28 /* YWBCardView.m in Sources */,
 				B48EE48A21ABD5C3007A211E /* YWBToolbar.m in Sources */,
 				B4340B6A21A5324500A4993E /* main.m in Sources */,
+				B478B3D921B4D41400582E1F /* YPhotoBrowser.m in Sources */,
 				B4340B5C21A5324300A4993E /* AppDelegate.m in Sources */,
 				B432202821A7D92A005027C4 /* YWBStatusTitle.m in Sources */,
 			);
@@ -445,14 +475,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B4340B6021A5324300A4993E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B4340B6121A5324300A4993E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		B4340B6521A5324500A4993E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -586,7 +608,10 @@
 				GCC_PREFIX_HEADER = "YWeiBoDemo/Supporting Files/YWeiBoDemo.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/YWeiBoDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxw.YWeiBoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -603,7 +628,10 @@
 				GCC_PREFIX_HEADER = "YWeiBoDemo/Supporting Files/YWeiBoDemo.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/YWeiBoDemo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yxw.YWeiBoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
