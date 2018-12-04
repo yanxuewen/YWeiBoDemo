@@ -83,7 +83,8 @@
     }
     
     kWeakSelf(self);
-    [_imageView setImageWithURL:photoM.imageURL placeholder:photoM.placeholderImage options:kNilOptions progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    [_imageView setImageWithURL:photoM.imageURL placeholder:photoM.placeholderImage
+                    options:kNilOptions progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         kStrongSelf(self);
         if (!self) return;
         CGFloat progress = receivedSize / (float)expectedSize;
@@ -137,6 +138,10 @@
     [CATransaction setDisableActions:YES];
     _imageView.frame = _imageContainerView.bounds;
     [CATransaction commit];
+}
+
+- (CGFloat)zoomScale {
+    return _scrollView.zoomScale;
 }
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "YPhotoBrowserModel.h"
 
-#define kCellPadding 20
+#define kCellPadding 20   /// cell 宽度比屏幕宽 kCellPadding
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIView *imageContainerView;
 @property (nonatomic, strong) YYAnimatedImageView *imageView;
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
+@property (nonatomic, assign, readonly) CGFloat zoomScale;
+
+- (void)resizeSubviewSize;
 
 @end
 

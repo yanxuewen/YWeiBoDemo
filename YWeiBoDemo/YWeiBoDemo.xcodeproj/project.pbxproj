@@ -43,6 +43,7 @@
 		B4F24D6B21AD2FB80064EB28 /* YWBCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D6A21AD2FB80064EB28 /* YWBCardView.m */; };
 		B4F24D6E21AD373C0064EB28 /* YWBTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D6D21AD373C0064EB28 /* YWBTagView.m */; };
 		B4F24D7121AD37CB0064EB28 /* YWBTagStruct.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F24D7021AD37CB0064EB28 /* YWBTagStruct.m */; };
+		B4F96D6021B61B6200F65B5C /* YWBPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F96D5F21B61B6200F65B5C /* YWBPhotoView.m */; };
 		F422D6E9559686258F34250E /* libPods-YWeiBoDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38EAFA88E7F2704901B0696F /* libPods-YWeiBoDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +112,8 @@
 		B4F24D6D21AD373C0064EB28 /* YWBTagView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBTagView.m; sourceTree = "<group>"; };
 		B4F24D6F21AD37CB0064EB28 /* YWBTagStruct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBTagStruct.h; sourceTree = "<group>"; };
 		B4F24D7021AD37CB0064EB28 /* YWBTagStruct.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBTagStruct.m; sourceTree = "<group>"; };
+		B4F96D5E21B61B6200F65B5C /* YWBPhotoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBPhotoView.h; sourceTree = "<group>"; };
+		B4F96D5F21B61B6200F65B5C /* YWBPhotoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBPhotoView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,6 +275,8 @@
 				B4F24D6A21AD2FB80064EB28 /* YWBCardView.m */,
 				B4F24D6C21AD373B0064EB28 /* YWBTagView.h */,
 				B4F24D6D21AD373C0064EB28 /* YWBTagView.m */,
+				B4F96D5E21B61B6200F65B5C /* YWBPhotoView.h */,
+				B4F96D5F21B61B6200F65B5C /* YWBPhotoView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -458,6 +463,7 @@
 				B4F24D6521ACE07D0064EB28 /* YWBContent.m in Sources */,
 				B4F24D6821ACE86A0064EB28 /* YWBEmoticon.m in Sources */,
 				B432202F21A7F855005027C4 /* YWBStatusTitleView.m in Sources */,
+				B4F96D6021B61B6200F65B5C /* YWBPhotoView.m in Sources */,
 				B432201E21A79F57005027C4 /* YWBFeedListCell.m in Sources */,
 				B4EC5E5D21A688B5001BF575 /* YBaseModel.m in Sources */,
 				B478B3DF21B503EF00582E1F /* YPhotoBrowserModel.m in Sources */,

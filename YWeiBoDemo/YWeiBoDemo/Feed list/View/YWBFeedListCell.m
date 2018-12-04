@@ -14,6 +14,7 @@
 #import "YWBToolbarView.h"
 #import "YWBCardView.h"
 #import "YWBTagView.h"
+#import "YWBPhotoView.h"
 
 @interface YWBFeedListCell ()
 
@@ -142,7 +143,7 @@
     
     NSMutableArray *picViews = [NSMutableArray new];
     for (int i = 0; i < 9; i++) {
-        UIImageView *imageView = [UIImageView new];
+        YWBPhotoView *imageView = [YWBPhotoView new];
         imageView.size = CGSizeMake(100, 100);
         imageView.hidden = YES;
         imageView.clipsToBounds = YES;
@@ -150,11 +151,16 @@
         imageView.backgroundColor = kWBCellHighlightColor;
         imageView.exclusiveTouch = YES;
         
-        [imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
-            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(cell:didClickImageAtIndex:)]) {
-                [weakself.delegate cell:weakself didClickImageAtIndex:i];
+        imageView.touchBlock = ^(YWBPhotoView *view, YYGestureRecognizerState state, NSSet *touches, UIEvent *event) {
+            if (![weakself.delegate respondsToSelector:@selector(cell:didClickImageAtIndex:)]) return;
+            if (state == YYGestureRecognizerStateEnded) {
+                UITouch *touch = touches.anyObject;
+                CGPoint p = [touch locationInView:view];
+                if (CGRectContainsPoint(view.bounds, p)) {
+                    [weakself.delegate cell:weakself didClickImageAtIndex:i];
+                }
             }
-        }]];
+        };
         
         UIView *badge = [UIImageView new];
         badge.userInteractionEnabled = NO;
@@ -283,9 +289,9 @@
     int picsCount = (int)pics.count;
     
     for (int i = 0; i < 9; i++) {
-        UIImageView *imageView = _picViews[i];
+        YWBPhotoView *imageView = _picViews[i];
         if (i >= picsCount) {
-            [imageView cancelCurrentImageRequest];
+            [imageView.layer cancelCurrentImageRequest];
             imageView.hidden = YES;
         } else {
             CGPoint origin = {0};
@@ -327,7 +333,7 @@
             }
             
             kWeakSelf(imageView);
-            [imageView setImageWithURL:pic.bmiddle.url
+            [imageView.layer setImageWithURL:pic.bmiddle.url
                                  placeholder:nil
                                      options:YYWebImageOptionAvoidSetImage
                                   completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
@@ -340,20 +346,23 @@
                                           CGFloat scale = (height / width) / (imageView.height / imageView.width);
                                           if (scale < 0.99 || isnan(scale)) { // 宽图把左右两边裁掉
                                               imageView.contentMode = UIViewContentModeScaleAspectFit;
-                                              
+                                              imageView.layer.contentsRect = CGRectMake(0, 0, 1, 1);
                                           } else { // 高图只保留顶部
-                                              imageView.contentMode = UIViewContentModeScaleAspectFill;
-                                             
+                                              imageView.contentMode = UIViewContentModeScaleToFill;
+                                              imageView.layer.contentsRect = CGRectMake(0, 0, 1, (float)width / height);
                                           }
-                                          if (from != YYWebImageFromMemoryCache) {
+                                          
+                                          imageView.image = image;
+                                          
+                                          if (from != YYWebImageFromMemoryCacheFast) {
                                               CATransition *transition = [CATransition animation];
                                               transition.duration = 0.15;
                                               transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
                                               transition.type = kCATransitionFade;
-                                              [imageView.layer addAnimation:transition forKey:@"YYWebImageFade"];
+                                              [imageView.layer addAnimation:transition forKey:@"contents"];
                                           }
 
-                                          imageView.image = image;
+                                          
 
                                       }
                                   }];

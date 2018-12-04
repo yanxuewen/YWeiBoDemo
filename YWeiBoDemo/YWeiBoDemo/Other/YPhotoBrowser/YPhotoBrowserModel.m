@@ -10,4 +10,20 @@
 
 @implementation YPhotoBrowserModel
 
+- (UIImage *)placeholderImage {
+    if ([_placeholderView respondsToSelector:@selector(image)]) {
+        return ((UIImageView *)_placeholderView).image;
+    }
+    return nil;
+}
+
+- (BOOL)placeholderClippedToTop {
+    if (_placeholderView) {
+        if (_placeholderView.layer.contentsRect.size.height < 1) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end

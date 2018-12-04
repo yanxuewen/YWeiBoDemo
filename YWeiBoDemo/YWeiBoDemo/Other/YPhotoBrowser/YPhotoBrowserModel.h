@@ -9,12 +9,15 @@
 #import "YBaseModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
+@class YWBPhotoView;
 
 @interface YPhotoBrowserModel : YBaseModel
 
-@property (nonatomic, strong) UIImage *placeholderImage;
+@property (nonatomic, strong) UIView *placeholderView;
+@property (nonatomic, strong, readonly) UIImage *placeholderImage;
 @property (nonatomic, assign) CGSize imageSize;
 @property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic, assign, readonly) BOOL placeholderClippedToTop;
 
 @end
 

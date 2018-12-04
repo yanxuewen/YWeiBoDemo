@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 //- (instancetype)initWithImageArr:(NSArray<YPhotoBrowserModel *> *)imageArr;
 //- (instancetype)initWithImageArr:(NSArray<YPhotoBrowserModel *> *)imageArr index:(NSInteger)index;
 
-- (void)presentFromImageView:(UIImageView *)fromView toContainer:(UIView *)toContainer animated:(BOOL)animated completion:(nullable void (^)(void))completion;
+- (void)presentFromImageView:(UIView *)fromView toContainer:(UIView *)toContainer animated:(BOOL)animated completion:(nullable void (^)(void))completion;
 
 @end
 

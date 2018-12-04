@@ -11,6 +11,7 @@
 #import "YWBFeedListCell.h"
 #import "YPhotoBrowser.h"
 #import "YPhotoBrowserModel.h"
+#import "YWBPhotoView.h"
 
 @interface YViewController ()<UITableViewDelegate,UITableViewDataSource,YWBStatusCellDelegate>
 
@@ -99,17 +100,17 @@
 - (void)cell:(YWBFeedListCell *)cell didClickImageAtIndex:(NSUInteger)index {
     NSLog(@"%s  index:%zi",__func__,index);
     
-    UIImageView *fromView = nil;
+    YWBPhotoView *fromView = nil;
     NSMutableArray *arr = @[].mutableCopy;
     YWBStatus *status = cell.statusM;
     NSArray<YWBPicInfo *> *pics = status.retweeted_status ? status.retweeted_status.pics : status.pics;
     
     for (NSUInteger i = 0, max = pics.count; i < max; i++) {
-        UIImageView *imgView = cell.picViews[i];
+        YWBPhotoView *imgView = cell.picViews[i];
         YWBPicInfo *pic = pics[i];
         YWBPicMetadata *meta = pic.largest.badgeType == YWBPicBadgeTypeGIF ? pic.largest : pic.large;
         YPhotoBrowserModel *model = [YPhotoBrowserModel new];
-        model.placeholderImage = imgView.image;
+        model.placeholderView = imgView;
         model.imageURL = meta.url;
         model.imageSize = CGSizeMake(meta.width, meta.height);
         [arr addObject:model];
@@ -122,7 +123,7 @@
     _photoBrowser.currentIndex = index;
     _photoBrowser.imageArr = arr;
     [_photoBrowser presentFromImageView:fromView toContainer:self.navigationController.view animated:YES completion:nil];
-    
+    [self presentViewController:<#(nonnull UIViewController *)#> animated:<#(BOOL)#> completion:<#^(void)completion#>]
 }
 
 - (BOOL)prefersStatusBarHidden {

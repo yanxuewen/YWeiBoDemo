@@ -11,7 +11,7 @@
 #import "YWBStatusHelper.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@class YWBFeedListCell;
+@class YWBFeedListCell,YWBPhotoView;
 @protocol YWBStatusCellDelegate <NSObject>
 @optional
 /// 点击了 Cell
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YWBFeedListCell : UITableViewCell
 
 @property (nonatomic, strong) YWBStatus *statusM;
-@property (nonatomic, strong) NSArray<UIImageView *> *picViews;      // 图片
+@property (nonatomic, strong) NSArray<YWBPhotoView *> *picViews;      // 图片
 
 @property (nonatomic, weak) id<YWBStatusCellDelegate> delegate;
 
