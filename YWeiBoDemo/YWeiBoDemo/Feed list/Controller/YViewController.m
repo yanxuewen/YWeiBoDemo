@@ -123,7 +123,7 @@
     _photoBrowser.currentIndex = index;
     _photoBrowser.imageArr = arr;
     [_photoBrowser presentFromImageView:fromView toContainer:self.navigationController.view animated:YES completion:nil];
-    [self presentViewController:<#(nonnull UIViewController *)#> animated:<#(BOOL)#> completion:<#^(void)completion#>]
+    
 }
 
 - (BOOL)prefersStatusBarHidden {
