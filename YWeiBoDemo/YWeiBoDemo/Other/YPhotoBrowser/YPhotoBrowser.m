@@ -170,22 +170,16 @@
                     animated:(BOOL)animated
                   completion:(nullable void (^)(void))completion {
     if (!toContainer) return;
-    
+    toContainer.userInteractionEnabled = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone];
     
     _fromIndex = _currentIndex;
     _fromView = fromView;
     _toContainerView = toContainer;
     
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self.snapshotImage = [self.toContainerView snapshotImageAfterScreenUpdates:NO];
-    });
-    
     BOOL fromViewHidden = fromView.hidden;
     fromView.hidden = YES;
     _snapshorImageHideFromView = [_toContainerView snapshotImage];
-    
     
     _background.image = _snapshorImageHideFromView;
     _blurBackground.image = [_snapshorImageHideFromView imageByBlurDark];
@@ -239,8 +233,9 @@
             cell.hidden = YES;
             [cell removeFromSuperview];
             self.collectionView.alpha = 1;
+            self.fromView.hidden = fromViewHidden;
             self.view.userInteractionEnabled = YES;
-            
+            self.toContainerView.userInteractionEnabled = YES;
             if (completion) completion();
         }];
         
@@ -272,7 +267,8 @@
             [cell removeFromSuperview];
             self.view.userInteractionEnabled = YES;
             self.collectionView.alpha = 1;
-            fromView.hidden = fromViewHidden;
+            self.fromView.hidden = fromViewHidden;
+            self.toContainerView.userInteractionEnabled = YES;
             if (completion) completion();
             
         }];
@@ -317,7 +313,7 @@
     } else {
         _background.image = _snapshorImageHideFromView;
     }
-    
+    self.toContainerView.userInteractionEnabled = NO;
     [UIView animateWithDuration:animated ? 0.2 : 0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut animations:^{
         self.pageControl.alpha = 0.0;
         self.blurBackground.alpha = 0.0;
@@ -342,11 +338,13 @@
         }
         
     }completion:^(BOOL finished) {
+        
         [UIView animateWithDuration:animated ? 0.15 : 0 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
             self.view.alpha = 0;
         } completion:^(BOOL finished) {
             cell.imageContainerView.layer.anchorPoint = CGPointMake(0.5, 0.5);
             [self.view removeFromSuperview];
+            self.toContainerView.userInteractionEnabled = YES;
             if (completion) completion();
         }];
     }];
