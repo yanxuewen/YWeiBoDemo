@@ -14,11 +14,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSArray *imageArr;
 @property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, strong) UIView *fromView;
+@property (nonatomic, strong) NSArray *picViews;
+@property (nonatomic, strong) UIView *toContainerView;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UIPageControl *pageControl;
 
-//- (instancetype)initWithImageArr:(NSArray<YPhotoBrowserModel *> *)imageArr;
-//- (instancetype)initWithImageArr:(NSArray<YPhotoBrowserModel *> *)imageArr index:(NSInteger)index;
+@property (nonatomic, strong) UIImageView *background;
+@property (nonatomic, strong) UIImageView *blurBackground;
+@property (nonatomic, strong) UIImage *snapshorImageHideFromView;
+@property (nonatomic, strong) UIImage *snapshotImage;
+@property (nonatomic, assign) BOOL fromNavigationBarHidden;
+@property (nonatomic, assign) BOOL isPresented;
 
-- (void)presentFromImageView:(UIView *)fromView toContainer:(UIView *)toContainer animated:(BOOL)animated completion:(nullable void (^)(void))completion;
+- (void)scrollToPage:(NSInteger)page animated:(BOOL)animated;
+- (void)cancelAllImageLoad;
 
 @end
 

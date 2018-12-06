@@ -35,6 +35,7 @@
 		B478B3DF21B503EF00582E1F /* YPhotoBrowserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B478B3DE21B503EF00582E1F /* YPhotoBrowserModel.m */; };
 		B48EE48721ABD382007A211E /* YWBToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B48EE48621ABD382007A211E /* YWBToolbarView.m */; };
 		B48EE48A21ABD5C3007A211E /* YWBToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = B48EE48921ABD5C3007A211E /* YWBToolbar.m */; };
+		B4CD1CA721B8B9490096E9C5 /* YPhotoBrowser+Present.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CD1CA621B8B9490096E9C5 /* YPhotoBrowser+Present.m */; };
 		B4EC5E5621A642B1001BF575 /* AppDelegate+AppService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EC5E5521A642B1001BF575 /* AppDelegate+AppService.m */; };
 		B4EC5E5D21A688B5001BF575 /* YBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EC5E5C21A688B5001BF575 /* YBaseModel.m */; };
 		B4EC5E6121A68A75001BF575 /* YWBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EC5E6021A68A75001BF575 /* YWBModel.m */; };
@@ -95,6 +96,8 @@
 		B48EE48621ABD382007A211E /* YWBToolbarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBToolbarView.m; sourceTree = "<group>"; };
 		B48EE48821ABD5C3007A211E /* YWBToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWBToolbar.h; sourceTree = "<group>"; };
 		B48EE48921ABD5C3007A211E /* YWBToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YWBToolbar.m; sourceTree = "<group>"; };
+		B4CD1CA521B8B9490096E9C5 /* YPhotoBrowser+Present.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YPhotoBrowser+Present.h"; sourceTree = "<group>"; };
+		B4CD1CA621B8B9490096E9C5 /* YPhotoBrowser+Present.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "YPhotoBrowser+Present.m"; sourceTree = "<group>"; };
 		B4EC5E5421A642B1001BF575 /* AppDelegate+AppService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+AppService.h"; sourceTree = "<group>"; };
 		B4EC5E5521A642B1001BF575 /* AppDelegate+AppService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+AppService.m"; sourceTree = "<group>"; };
 		B4EC5E5921A645A0001BF575 /* YCommonMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YCommonMacros.h; sourceTree = "<group>"; };
@@ -221,6 +224,8 @@
 			children = (
 				B478B3D721B4D41400582E1F /* YPhotoBrowser.h */,
 				B478B3D821B4D41400582E1F /* YPhotoBrowser.m */,
+				B4CD1CA521B8B9490096E9C5 /* YPhotoBrowser+Present.h */,
+				B4CD1CA621B8B9490096E9C5 /* YPhotoBrowser+Present.m */,
 				B478B3DA21B4D45400582E1F /* YPhotoBrowserCell.h */,
 				B478B3DB21B4D45400582E1F /* YPhotoBrowserCell.m */,
 				B478B3DD21B503EF00582E1F /* YPhotoBrowserModel.h */,
@@ -457,6 +462,7 @@
 				B432202B21A7D9E0005027C4 /* YWBUser.m in Sources */,
 				B432202121A7AB52005027C4 /* YWBProfileView.m in Sources */,
 				B432202521A7AE80005027C4 /* YWBStatusHelper.m in Sources */,
+				B4CD1CA721B8B9490096E9C5 /* YPhotoBrowser+Present.m in Sources */,
 				B4340B5F21A5324300A4993E /* YViewController.m in Sources */,
 				B4F24D7121AD37CB0064EB28 /* YWBTagStruct.m in Sources */,
 				B4EC5E6121A68A75001BF575 /* YWBModel.m in Sources */,

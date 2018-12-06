@@ -12,70 +12,36 @@
 
 @interface YPhotoBrowser ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) UIPageControl *pageControl;
-
 @property (nonatomic, assign) NSInteger fromIndex;
 @property (nonatomic, assign) CGFloat itemWidth;
 
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 
-@property (nonatomic, strong) UIView *fromView;
-@property (nonatomic, strong) UIView *toContainerView;
-@property (nonatomic, strong) UIImageView *background;
-@property (nonatomic, strong) UIImageView *blurBackground;
-@property (nonatomic, strong) UIImage *snapshorImageHideFromView;
-@property (nonatomic, strong) UIImage *snapshotImage;
-@property (nonatomic, assign) BOOL fromNavigationBarHidden;
-@property (nonatomic, assign) BOOL isPresented;
-
 @end
 
 @implementation YPhotoBrowser
 
-//- (instancetype)initWithFrame:(CGRect)frame {
-//    if (self = [super initWithFrame:frame]) {
-//        self.backgroundColor = [UIColor clearColor];
-//        self.clipsToBounds = YES;
-//
-//        [self setupGestureRecognizer];
-//        [self setupUI];
-//    }
-//    return self;
-//}
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+//        [self prefersStatusBarHidden];
+        [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+    }
+}
+
 
 - (void)viewDidLoad {
     NSLog(@"%s",__func__);
     self.view.backgroundColor = [UIColor clearColor];
     self.view.clipsToBounds = YES;
-    
     [self setupGestureRecognizer];
     [self setupUI];
     
-//    [self performSelector:@selector(_preferredStatusBarVisibility)];
-    [self performSelector:@selector(_preferredStatusBarVisibility) withObject:nil afterDelay:0.5];
 }
 
 - (void)setImageArr:(NSArray *)imageArr {
     _imageArr = imageArr.copy;
     [_collectionView reloadData];
-}
-
-- (instancetype)initWithImageArr:(NSArray<YPhotoBrowserModel *> *)imageArr {
-    if (self = [self init]) {
-       
-        self.imageArr = imageArr;
-    }
-    return self;
-}
-
-- (instancetype)initWithImageArr:(NSArray<YPhotoBrowserModel *> *)imageArr index:(NSInteger)index {
-    self = [self initWithImageArr:imageArr];
-    if (index > 0 && index < imageArr.count) {
-        self.currentIndex = index;
-    }
-    
-    return self;
 }
 
 - (void)setupUI {
@@ -142,7 +108,8 @@
 }
 
 - (void)dismiss {
-    [self dismissAnimated:YES completion:nil];
+//    [self dismissAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)doubleTap:(UITapGestureRecognizer *)tapG {
@@ -164,193 +131,6 @@
     return cell;
 }
 
-
-- (void)presentFromImageView:(UIView *)fromView
-                 toContainer:(UIView *)toContainer
-                    animated:(BOOL)animated
-                  completion:(nullable void (^)(void))completion {
-    if (!toContainer) return;
-    toContainer.userInteractionEnabled = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone];
-    
-    _fromIndex = _currentIndex;
-    _fromView = fromView;
-    _toContainerView = toContainer;
-    
-    BOOL fromViewHidden = fromView.hidden;
-    fromView.hidden = YES;
-    _snapshorImageHideFromView = [_toContainerView snapshotImage];
-    
-    _background.image = _snapshorImageHideFromView;
-    _blurBackground.image = [_snapshorImageHideFromView imageByBlurDark];
-    
-    self.view.size = _toContainerView.size;
-    self.blurBackground.alpha = 0;
-    self.pageControl.alpha = 0;
-    self.pageControl.numberOfPages = self.imageArr.count;
-    self.pageControl.currentPage = self.currentIndex;
-    [_toContainerView addSubview:self.view];
-    
-    [self scrollToPage:_currentIndex animated:NO];
-    
-    [UIView setAnimationsEnabled:YES];
-    
-    YPhotoBrowserModel *model = _imageArr[_currentIndex];
-
-    YPhotoBrowserCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:[YPhotoBrowserCell className] forIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    cell.imageView.image = model.placeholderImage;
-    cell.alpha = 0;
-    cell.left = -kCellPadding/2.0;      /// cell 宽度比屏幕宽 kCellPadding
-    [cell resizeSubviewSize];
-    
-    [self.view addSubview:cell];
-    
-    if (model.placeholderClippedToTop) {
-        CGRect fromFrame = [_fromView convertRect:_fromView.bounds toView:cell];
-        CGRect originFrame = cell.imageContainerView.frame;
-        CGFloat scale = fromFrame.size.width / cell.imageContainerView.width;
-        fromView.hidden = fromViewHidden;
-        cell.imageContainerView.centerX = CGRectGetMidX(fromFrame);
-        cell.imageContainerView.height = fromFrame.size.height / scale;
-        cell.imageContainerView.layer.transformScale = scale;
-        cell.imageContainerView.centerY = CGRectGetMidY(fromFrame);
-        
-        float oneTime = animated ? 0.25 : 0;
-        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.blurBackground.alpha = 1;
-        }completion:NULL];
-        
-        self.view.userInteractionEnabled = NO;
-        self.collectionView.alpha = 0;
-        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            cell.imageContainerView.layer.transformScale = 1;
-            cell.imageContainerView.frame = originFrame;
-            cell.alpha = 1;
-            self.pageControl.alpha = 1;
-            
-        }completion:^(BOOL finished) {
-            self.isPresented = YES;
-            cell.hidden = YES;
-            [cell removeFromSuperview];
-            self.collectionView.alpha = 1;
-            self.fromView.hidden = fromViewHidden;
-            self.view.userInteractionEnabled = YES;
-            self.toContainerView.userInteractionEnabled = YES;
-            if (completion) completion();
-        }];
-        
-    } else {
-        CGRect fromFrame = [_fromView convertRect:_fromView.bounds toView:cell.imageContainerView];
-        
-        cell.imageContainerView.clipsToBounds = NO;
-        cell.imageView.frame = fromFrame;
-        cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
-        
-        float oneTime = animated ? 0.25 : 0;
-        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.blurBackground.alpha = 1;
-        }completion:NULL];
-        
-        self.view.userInteractionEnabled = NO;
-        self.collectionView.alpha = 0;
-        
-        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
-            cell.imageView.frame = cell.imageContainerView.bounds;
-            cell.imageView.layer.transformScale = 1.;
-            cell.alpha = 1;
-            
-        }completion:^(BOOL finished) {
-            self.pageControl.alpha = 1;
-            cell.imageContainerView.clipsToBounds = YES;
-            self.isPresented = YES;
-            cell.hidden = YES;
-            [cell removeFromSuperview];
-            self.view.userInteractionEnabled = YES;
-            self.collectionView.alpha = 1;
-            self.fromView.hidden = fromViewHidden;
-            self.toContainerView.userInteractionEnabled = YES;
-            if (completion) completion();
-            
-        }];
-    }
-    
-}
-
-- (void)dismissAnimated:(BOOL)animated completion:(void (^)(void))completion {
-    [UIView setAnimationsEnabled:YES];
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone];
-    
-    NSInteger currentPage = self.currentIndex;
-    YPhotoBrowserCell *cell = (YPhotoBrowserCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0]];
-    YPhotoBrowserModel *item = _imageArr[currentPage];
-    
-    UIView *fromView = nil;
-    if (_fromIndex == currentPage) {
-        fromView = _fromView;
-    } else {
-        fromView = item.placeholderView;
-    }
-    
-    [self cancelAllImageLoad];
-    _isPresented = NO;
-    BOOL isFromImageClipped = fromView.layer.contentsRect.size.height < 1;
-    
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    if (isFromImageClipped) {
-        CGRect frame = cell.imageContainerView.frame;
-        cell.imageContainerView.layer.anchorPoint = CGPointMake(0.5, 0);
-        cell.imageContainerView.frame = frame;
-    }
-    cell.progressLayer.hidden = YES;
-    [CATransaction commit];
-    
-    
-    if (_fromIndex != currentPage) {
-        _background.image = _snapshotImage;
-        [_background.layer addFadeAnimationWithDuration:0.25 curve:UIViewAnimationCurveEaseOut];
-    } else {
-        _background.image = _snapshorImageHideFromView;
-    }
-    self.toContainerView.userInteractionEnabled = NO;
-    [UIView animateWithDuration:animated ? 0.2 : 0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut animations:^{
-        self.pageControl.alpha = 0.0;
-        self.blurBackground.alpha = 0.0;
-
-        if (isFromImageClipped) {
-            
-            CGRect fromFrame = [fromView convertRect:fromView.bounds toView:cell];
-            fromFrame.origin.x -= kCellPadding/2.0;
-            CGFloat scale = fromFrame.size.width / cell.imageContainerView.width * cell.zoomScale;
-            CGFloat height = fromFrame.size.height / fromFrame.size.width * cell.imageContainerView.width;
-            if (isnan(height)) height = cell.imageContainerView.height;
-            
-            cell.imageContainerView.height = height;
-            cell.imageContainerView.center = CGPointMake(CGRectGetMidX(fromFrame), CGRectGetMinY(fromFrame));
-            cell.imageContainerView.layer.transformScale = scale;
-            
-        } else {
-            CGRect fromFrame = [fromView convertRect:fromView.bounds toView:cell.imageContainerView];
-            cell.imageContainerView.clipsToBounds = NO;
-            cell.imageView.contentMode = fromView.contentMode;
-            cell.imageView.frame = fromFrame;
-        }
-        
-    }completion:^(BOOL finished) {
-        
-        [UIView animateWithDuration:animated ? 0.15 : 0 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-            self.view.alpha = 0;
-        } completion:^(BOOL finished) {
-            cell.imageContainerView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-            [self.view removeFromSuperview];
-            self.toContainerView.userInteractionEnabled = YES;
-            if (completion) completion();
-        }];
-    }];
-    
-    
-}
 
 - (void)cancelAllImageLoad {
     NSArray *cells = [_collectionView visibleCells];
@@ -378,13 +158,12 @@
     _currentIndex = intPage;
 }
 
-- (void)scrollToPage:(NSInteger)page animated:(BOOL)animated{
+- (void)scrollToPage:(NSInteger)page animated:(BOOL)animated {
     if (page >= 0 && page < _imageArr.count ) {
         CGFloat offsetX = _itemWidth * page;
         [_collectionView setContentOffset:CGPointMake(offsetX, 0) animated:animated];
     }
 }
-
 
 - (BOOL)prefersStatusBarHidden {
     return YES;

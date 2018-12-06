@@ -119,10 +119,15 @@
         }
     }
     
+    
     _photoBrowser = [[YPhotoBrowser alloc] init];
     _photoBrowser.currentIndex = index;
     _photoBrowser.imageArr = arr;
-    [_photoBrowser presentFromImageView:fromView toContainer:self.navigationController.view animated:YES completion:nil];
+    _photoBrowser.fromView = fromView;
+    _photoBrowser.picViews = cell.picViews;
+    _photoBrowser.toContainerView = self.navigationController.view;
+    
+    [self presentViewController:_photoBrowser animated:YES completion:nil];
     
 }
 
