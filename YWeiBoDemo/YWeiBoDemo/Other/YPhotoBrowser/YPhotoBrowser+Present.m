@@ -29,9 +29,13 @@
         [self dismissAnimate:transitionContext];
         return;
     }
+    [self presentAnimate:transitionContext];
+}
+
+- (void)presentAnimate:(id<UIViewControllerContextTransitioning>)transitionContext {
     
-    BOOL fromViewHidden = fromView.hidden;
-    fromView.hidden = YES;
+    BOOL fromViewHidden = self.fromView.hidden;
+    self.fromView.hidden = YES;
     self.snapshorImageHideFromView = [self.toContainerView snapshotImage];
     
     self.background.image = self.snapshorImageHideFromView;
@@ -62,7 +66,7 @@
         CGRect fromFrame = [self.fromView convertRect:self.fromView.bounds toView:cell];
         CGRect originFrame = cell.imageContainerView.frame;
         CGFloat scale = fromFrame.size.width / cell.imageContainerView.width;
-       
+        
         cell.imageContainerView.centerX = CGRectGetMidX(fromFrame);
         cell.imageContainerView.height = fromFrame.size.height / scale;
         cell.imageContainerView.layer.transformScale = scale;
@@ -90,6 +94,7 @@
             self.view.userInteractionEnabled = YES;
             self.toContainerView.userInteractionEnabled = YES;
             [transitionContext completeTransition:finished];
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
         }];
         
     } else {
@@ -123,15 +128,15 @@
             self.fromView.hidden = fromViewHidden;
             self.toContainerView.userInteractionEnabled = YES;
             [transitionContext completeTransition:finished];
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
             
         }];
     }
-    
 }
 
 - (void)dismissAnimate:(id<UIViewControllerContextTransitioning>)transitionContext {
     [UIView setAnimationsEnabled:YES];
-   
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     NSInteger currentPage = self.currentIndex;
     YPhotoBrowserCell *cell = (YPhotoBrowserCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0]];
 //    YPhotoBrowserModel *item = self.imageArr[currentPage];
@@ -200,5 +205,6 @@
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
     return self;
 }
+
 
 @end

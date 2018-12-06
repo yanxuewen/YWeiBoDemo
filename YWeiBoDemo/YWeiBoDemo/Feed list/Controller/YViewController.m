@@ -26,6 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor = kWBCellBackgroundColor;
     self.navigationItem.title = @"微博 Demo";
     
@@ -128,11 +129,12 @@
     _photoBrowser.toContainerView = self.navigationController.view;
     
     [self presentViewController:_photoBrowser animated:YES completion:nil];
-    
+
 }
 
 - (BOOL)prefersStatusBarHidden {
     return NO;
 }
+
 
 @end
