@@ -137,12 +137,10 @@
 - (void)dismissAnimate:(id<UIViewControllerContextTransitioning>)transitionContext {
     [UIView setAnimationsEnabled:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-    NSInteger currentPage = self.currentIndex;
-    YPhotoBrowserCell *cell = (YPhotoBrowserCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0]];
-//    YPhotoBrowserModel *item = self.imageArr[currentPage];
+
+    YPhotoBrowserCell *cell = (YPhotoBrowserCell *)self.collectionView.visibleCells.firstObject;
     
     UIView *fromView = self.picViews[self.currentIndex];
-    
     
     [self cancelAllImageLoad];
     self.isPresented = NO;
@@ -158,6 +156,9 @@
     cell.progressLayer.hidden = YES;
     [CATransaction commit];
     
+    if (isFromImageClipped) {
+        [cell scrollToTopAnimated:NO];
+    }
     
     self.toContainerView.userInteractionEnabled = NO;
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut animations:^{
@@ -166,15 +167,17 @@
         
         if (isFromImageClipped) {
             
-            CGRect fromFrame = [fromView convertRect:fromView.bounds toView:cell];
-            fromFrame.origin.x -= kCellPadding/2.0;
+            CGRect fromFrame = [fromView convertRect:fromView.bounds toView:cell.scrollView];
+//            fromFrame.origin.x -= kCellPadding/2.0;
             CGFloat scale = fromFrame.size.width / cell.imageContainerView.width * cell.zoomScale;
             CGFloat height = fromFrame.size.height / fromFrame.size.width * cell.imageContainerView.width;
             if (isnan(height)) height = cell.imageContainerView.height;
             
             cell.imageContainerView.height = height;
             cell.imageContainerView.center = CGPointMake(CGRectGetMidX(fromFrame), CGRectGetMinY(fromFrame));
+            
             cell.imageContainerView.layer.transformScale = scale;
+        
             
         } else {
             CGRect fromFrame = [fromView convertRect:fromView.bounds toView:cell.imageContainerView];
@@ -184,8 +187,8 @@
         }
         
     }completion:^(BOOL finished) {
-        
-        [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        NSLog(@"imageContainerView frame: %@",NSStringFromCGRect(cell.imageContainerView.frame));
+        [UIView animateWithDuration:0.10 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
             self.view.alpha = 0;
         } completion:^(BOOL finished) {
             cell.imageContainerView.layer.anchorPoint = CGPointMake(0.5, 0.5);

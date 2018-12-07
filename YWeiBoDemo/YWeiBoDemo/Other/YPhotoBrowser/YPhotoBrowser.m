@@ -37,7 +37,7 @@
 
 
 - (void)viewDidLoad {
-    NSLog(@"%s",__func__);
+//    NSLog(@"%s",__func__);
     self.view.backgroundColor = [UIColor clearColor];
     self.view.clipsToBounds = YES;
     [self setupGestureRecognizer];
@@ -119,7 +119,19 @@
 }
 
 - (void)doubleTap:(UITapGestureRecognizer *)tapG {
-    
+    if (!_isPresented) return;
+    YPhotoBrowserCell *cell = _collectionView.visibleCells.firstObject;;
+    if (cell) {
+        if (cell.zoomScale > 1) {
+            [cell setZoomScale:1 animated:YES];
+        } else {
+            CGPoint touchPoint = [tapG locationInView:cell.imageView];
+            CGFloat newZoomScale = cell.maximumZoomScale;
+            CGFloat xsize = self.view.width / newZoomScale;
+            CGFloat ysize = self.view.height / newZoomScale;
+            [cell zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
+        }
+    }
 }
 
 - (void)pan:(UIPanGestureRecognizer *)panG {

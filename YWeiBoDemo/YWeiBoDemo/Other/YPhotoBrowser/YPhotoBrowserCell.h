@@ -16,12 +16,17 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YPhotoBrowserCell : UICollectionViewCell
 
 @property (nonatomic, strong) YPhotoBrowserModel *photoM;
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *imageContainerView;
 @property (nonatomic, strong) YYAnimatedImageView *imageView;
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
 @property (nonatomic, assign, readonly) CGFloat zoomScale;
+@property (nonatomic, assign, readonly) CGFloat maximumZoomScale;
 
 - (void)resizeSubviewSize;
+- (void)setZoomScale:(CGFloat)scale animated:(BOOL)animated;
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
+- (void)scrollToTopAnimated:(BOOL)animated;
 
 @end
 

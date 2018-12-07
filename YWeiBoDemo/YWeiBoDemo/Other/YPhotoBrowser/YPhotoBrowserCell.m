@@ -10,9 +10,6 @@
 
 @interface YPhotoBrowserCell ()<UIScrollViewDelegate>
 
-@property (nonatomic, strong) UIScrollView *scrollView;
-
-
 
 @end
 
@@ -28,6 +25,7 @@
         _scrollView.delegate = self;
         _scrollView.bouncesZoom = YES;
         _scrollView.maximumZoomScale = 3;
+    
         _scrollView.multipleTouchEnabled = YES;
         _scrollView.alwaysBounceVertical = NO;
         _scrollView.showsVerticalScrollIndicator = YES;
@@ -143,5 +141,39 @@
 - (CGFloat)zoomScale {
     return _scrollView.zoomScale;
 }
+
+- (CGFloat)maximumZoomScale {
+    return _scrollView.maximumZoomScale;
+}
+
+- (void)scrollToTopAnimated:(BOOL)animated {
+    [_scrollView scrollToTopAnimated:animated];
+}
+
+- (void)setZoomScale:(CGFloat)scale animated:(BOOL)animated {
+    [_scrollView setZoomScale:scale animated:animated];
+}
+
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated {
+    [_scrollView zoomToRect:rect animated:animated];
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return _imageContainerView;
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    UIView *subView = _imageContainerView;
+    
+    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?
+    (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
+    
+    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?
+    (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
+    
+    subView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
+                                 scrollView.contentSize.height * 0.5 + offsetY);
+}
+
 
 @end
