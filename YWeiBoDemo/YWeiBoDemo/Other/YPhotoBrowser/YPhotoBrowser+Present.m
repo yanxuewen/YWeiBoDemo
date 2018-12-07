@@ -33,22 +33,22 @@
 }
 
 - (void)presentAnimate:(id<UIViewControllerContextTransitioning>)transitionContext {
-    
+
     BOOL fromViewHidden = self.fromView.hidden;
     self.fromView.hidden = YES;
     self.snapshorImageHideFromView = [self.toContainerView snapshotImage];
-    
     self.background.image = self.snapshorImageHideFromView;
-    self.blurBackground.image = [self.snapshorImageHideFromView imageByBlurDark];
+    self.fromView.hidden = fromViewHidden;
     
     self.view.size = self.toContainerView.size;
-    self.blurBackground.alpha = 0;
+    self.blackBackground.alpha = 0;
+    self.background.alpha = 0;
     self.pageControl.alpha = 0;
     self.pageControl.numberOfPages = self.imageArr.count;
     self.pageControl.currentPage = self.currentIndex;
     
     [self scrollToPage:self.currentIndex animated:NO];
-    
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
     UIView *containView = [transitionContext containerView];
     
@@ -62,6 +62,8 @@
     
     [self.view addSubview:cell];
     [containView addSubview:self.view];
+    
+
     if (model.placeholderClippedToTop) {
         CGRect fromFrame = [self.fromView convertRect:self.fromView.bounds toView:cell];
         CGRect originFrame = cell.imageContainerView.frame;
@@ -72,29 +74,28 @@
         cell.imageContainerView.layer.transformScale = scale;
         cell.imageContainerView.centerY = CGRectGetMidY(fromFrame);
         
-        float oneTime = 0.25;
-        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.blurBackground.alpha = 1;
-        }completion:NULL];
+        NSTimeInterval oneTime = 0.25;
         
         self.view.userInteractionEnabled = NO;
         self.collectionView.alpha = 0;
         [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             cell.imageContainerView.layer.transformScale = 1;
             cell.imageContainerView.frame = originFrame;
+            self.blackBackground.alpha = 1;
             cell.alpha = 1;
             self.pageControl.alpha = 1;
             
         }completion:^(BOOL finished) {
+            
             self.isPresented = YES;
             cell.hidden = YES;
             [cell removeFromSuperview];
             self.collectionView.alpha = 1;
-            self.fromView.hidden = fromViewHidden;
+            self.background.alpha = 1;
             self.view.userInteractionEnabled = YES;
             self.toContainerView.userInteractionEnabled = YES;
             [transitionContext completeTransition:finished];
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }];
         
     } else {
@@ -104,20 +105,18 @@
         cell.imageView.frame = fromFrame;
         cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
         
-        float oneTime = 0.25;
-        [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.blurBackground.alpha = 1;
-        }completion:NULL];
-        
+        NSTimeInterval oneTime = 0.25;
+       
         self.view.userInteractionEnabled = NO;
         self.collectionView.alpha = 0;
-        
         [UIView animateWithDuration:oneTime delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
             cell.imageView.frame = cell.imageContainerView.bounds;
             cell.imageView.layer.transformScale = 1.;
+            self.blackBackground.alpha = 1;
             cell.alpha = 1;
-            
+           
         }completion:^(BOOL finished) {
+            
             self.pageControl.alpha = 1;
             cell.imageContainerView.clipsToBounds = YES;
             self.isPresented = YES;
@@ -125,12 +124,12 @@
             [cell removeFromSuperview];
             self.view.userInteractionEnabled = YES;
             self.collectionView.alpha = 1;
-            self.fromView.hidden = fromViewHidden;
+            self.background.alpha = 1;
             self.toContainerView.userInteractionEnabled = YES;
             [transitionContext completeTransition:finished];
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-            
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }];
+        
     }
 }
 
@@ -161,34 +160,38 @@
     }
     
     self.toContainerView.userInteractionEnabled = NO;
-    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut animations:^{
+    CGFloat scale = 1.0;
+    CGFloat height = 1.0;
+    CGRect fromFrame = CGRectZero;
+    if (isFromImageClipped) {
+        
+        fromFrame = [fromView convertRect:fromView.bounds toView:cell.scrollView];
+        scale = fromFrame.size.width / cell.imageContainerView.width * cell.zoomScale;
+        height = fromFrame.size.height / fromFrame.size.width * cell.imageContainerView.width;
+        
+        if (isnan(height)) height = cell.imageContainerView.height;
+        
+    } else {
+        fromFrame = [fromView convertRect:fromView.bounds toView:cell.imageContainerView];
+        cell.imageContainerView.clipsToBounds = NO;
+    }
+    [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut animations:^{
         self.pageControl.alpha = 0.0;
-        self.blurBackground.alpha = 0.0;
+        self.blackBackground.alpha = 0.0;
         
         if (isFromImageClipped) {
             
-            CGRect fromFrame = [fromView convertRect:fromView.bounds toView:cell.scrollView];
-//            fromFrame.origin.x -= kCellPadding/2.0;
-            CGFloat scale = fromFrame.size.width / cell.imageContainerView.width * cell.zoomScale;
-            CGFloat height = fromFrame.size.height / fromFrame.size.width * cell.imageContainerView.width;
-            if (isnan(height)) height = cell.imageContainerView.height;
-            
             cell.imageContainerView.height = height;
             cell.imageContainerView.center = CGPointMake(CGRectGetMidX(fromFrame), CGRectGetMinY(fromFrame));
-            
             cell.imageContainerView.layer.transformScale = scale;
-        
-            
         } else {
-            CGRect fromFrame = [fromView convertRect:fromView.bounds toView:cell.imageContainerView];
-            cell.imageContainerView.clipsToBounds = NO;
             cell.imageView.contentMode = fromView.contentMode;
             cell.imageView.frame = fromFrame;
         }
-        
+       
     }completion:^(BOOL finished) {
-        NSLog(@"imageContainerView frame: %@",NSStringFromCGRect(cell.imageContainerView.frame));
-        [UIView animateWithDuration:0.10 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        
+        [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
             self.view.alpha = 0;
         } completion:^(BOOL finished) {
             cell.imageContainerView.layer.anchorPoint = CGPointMake(0.5, 0.5);
@@ -197,7 +200,6 @@
             [transitionContext completeTransition:finished];
         }];
     }];
-    
     
 }
 

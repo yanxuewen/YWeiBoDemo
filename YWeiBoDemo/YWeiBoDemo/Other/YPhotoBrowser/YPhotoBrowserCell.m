@@ -25,22 +25,23 @@
         _scrollView.delegate = self;
         _scrollView.bouncesZoom = YES;
         _scrollView.maximumZoomScale = 3;
-    
+        _scrollView.minimumZoomScale =  0.5;
         _scrollView.multipleTouchEnabled = YES;
         _scrollView.alwaysBounceVertical = NO;
         _scrollView.showsVerticalScrollIndicator = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
-//        _scrollView.frame = self.frame;
+        _scrollView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_scrollView];
         
         _imageContainerView = [UIView new];
         _imageContainerView.clipsToBounds = YES;
+        _imageContainerView.backgroundColor = [UIColor clearColor];
+        
         [_scrollView addSubview:_imageContainerView];
         
         _imageView = [YYAnimatedImageView new];
         _imageView.clipsToBounds = YES;
         _imageView.backgroundColor = [UIColor colorWithWhite:1.000 alpha:0.500];
-        
         [_imageContainerView addSubview:_imageView];
         
         _progressLayer = [CAShapeLayer layer];

@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIPageControl *pageControl;
 
 @property (nonatomic, strong) UIImageView *background;
-@property (nonatomic, strong) UIImageView *blurBackground;
+@property (nonatomic, strong) UIView *blackBackground;
 @property (nonatomic, strong) UIImage *snapshorImageHideFromView;
 @property (nonatomic, strong) UIImage *snapshotImage;
 @property (nonatomic, assign) BOOL fromNavigationBarHidden;
